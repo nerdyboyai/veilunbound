@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Veil Unbound — Carnival of Echoes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0608;
+    --parchment: #f0e6d0;
+    --parchment-dark: #d4c4a0;
+    --blood: #8b1a1a;
+    --blood-bright: #c0392b;
+    --gold: #c9a84c;
+    --gold-bright: #e8c96a;
+    --mist: #7a8fa6;
+    --mist-light: #a8bfcf;
+    --shadow: #1a0f1e;
+    --carnival-red: #6b1515;
+    --carnival-purple: #2a1040;
+    --veil: rgba(138, 43, 226, 0.15);
+    --glow-gold: 0 0 20px rgba(201, 168, 76, 0.4);
+    --glow-blood: 0 0 20px rgba(139, 26, 26, 0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.3;
+  }
+
+  /* ─── CUSTOM SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--ink); }
+  ::-webkit-scrollbar-thumb { background: var(--blood); border-radius: 3px; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3rem;
+    height: 64px;
+    background: linear-gradient(to bottom, rgba(10,6,8,0.98), rgba(10,6,8,0.7));
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-sigil {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--parchment-dark);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .session-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--blood-bright);
+    border: 1px solid var(--blood);
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(42,16,64,0.8) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 30% 70%, rgba(107,21,21,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 70% 20%, rgba(138,43,226,0.1) 0%, transparent 60%),
+      linear-gradient(to bottom, var(--shadow) 0%, var(--ink) 100%);
+  }
+
+  /* Animated mist rings */
+  .mist-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.06);
+    animation: mistExpand 8s ease-out infinite;
+  }
+
+  .mist-ring:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
+  .mist-ring:nth-child(2) { width: 500px; height: 500px; animation-delay: 2s; }
+  .mist-ring:nth-child(3) { width: 700px; height: 700px; animation-delay: 4s; }
+  .mist-ring:nth-child(4) { width: 900px; height: 900px; animation-delay: 6s; }
+
+  @keyframes mistExpand {
+    0% { opacity: 0; transform: scale(0.8); }
+    30% { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.3); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--blood-bright);
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+    animation: fadeInDown 1s ease 0.2s both;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--parchment);
+    position: relative;
+    z-index: 2;
+    animation: fadeInDown 1s ease 0.4s both;
+    text-shadow: 0 0 60px rgba(201,168,76,0.2), 0 4px 20px rgba(0,0,0,0.8);
+    letter-spacing: -0.01em;
+  }
+
+  .hero-title span {
+    color: var(--gold);
+    display: block;
+    font-size: 0.55em;
+    letter-spacing: 0.05em;
+    margin-top: 0.3em;
+  }
+
+  .hero-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 2rem auto;
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 1s ease 0.8s both;
+  }
+
+  .hero-divider::before {
+    content: '✦';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--gold);
+    font-size: 0.7rem;
+    background: var(--shadow);
+    padding: 0 0.5rem;
+  }
+
+  .hero-subtitle {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--mist-light);
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 1s ease 1s both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 1s ease 1.2s both;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 2rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-top: 0.3rem;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--mist);
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    animation: fadeIn 1s ease 2s both;
+    z-index: 2;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ─── SECTION BASE ─── */
+  section {
+    padding: 7rem 2rem;
+    position: relative;
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--blood-bright);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--parchment);
+    line-height: 1.2;
+  }
+
+  .section-rule {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 1.5rem auto 0;
+  }
+
+  /* ─── PARTY ROSTER ─── */
+  #party { background: linear-gradient(to bottom, var(--ink), rgba(26,15,30,0.8), var(--ink)); }
+
+  .party-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .character-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(26,15,30,0.9), rgba(10,6,8,0.95));
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 2rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  }
+
+  .character-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .character-card:hover {
+    border-color: rgba(201,168,76,0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6), var(--glow-gold);
+  }
+
+  .character-card:hover::before { opacity: 1; }
+
+  .char-sigil {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(201,168,76,0.4));
+  }
+
+  .char-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+  }
+
+  .char-race-class {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-bottom: 1rem;
+  }
+
+  .char-desc {
+    font-size: 0.85rem;
+    color: var(--parchment-dark);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .char-level-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.75rem;
+    color: var(--blood-bright);
+    border: 1px solid rgba(139,26,26,0.4);
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+  }
+
+  /* ─── LORE MAP ─── */
+  #lore-map {
+    background: radial-gradient(ellipse at center, rgba(26,15,30,0.6) 0%, var(--ink) 100%);
+  }
+
+  .map-container {
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.3);
+  }
+
+  .map-img-wrapper {
+    position: relative;
+    width: 100%;
+    display: block;
+    line-height: 0;
+  }
+
+  .map-img-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: sepia(0.15) brightness(0.88) contrast(1.05);
+  }
+
+  /* Dark vignette over the map edges */
+  .map-img-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 55%, rgba(10,6,8,0.7) 100%);
+    pointer-events: none;
+  }
+
+  /* Overlay SVG sits on top of the image, perfectly aligned */
+  .map-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .map-location {
+    cursor: pointer;
+  }
+
+  .map-location .node-ring {
+    transition: all 0.3s ease;
+  }
+
+  .map-location:hover .node-ring {
+    filter: drop-shadow(0 0 10px currentColor);
+  }
+
+  .map-location .node-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    pointer-events: none;
+    transition: all 0.3s;
+  }
+
+  .location-tooltip {
+    position: absolute;
+    background: rgba(8,4,6,0.97);
+    border: 1px solid rgba(201,168,76,0.35);
+    padding: 0.9rem 1.1rem;
+    max-width: 230px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s;
+    z-index: 20;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  }
+
+  .location-tooltip.visible { opacity: 1; }
+
+  .tooltip-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .tooltip-desc {
+    font-size: 0.78rem;
+    color: var(--parchment-dark);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .tooltip-status {
+    margin-top: 0.5rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .status-active { color: var(--gold); }
+  .status-danger { color: var(--blood-bright); }
+  .status-unknown { color: var(--mist); }
+
+  /* ─── RELATIONSHIP WEB ─── */
+  #relations {
+    background: linear-gradient(to bottom, var(--ink), rgba(26,15,30,0.5), var(--ink));
+  }
+
+  .web-container {
+    position: relative;
+    width: 100%;
+    height: 560px;
+    background: rgba(10,6,8,0.6);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  /* ─── SESSION LOG ─── */
+  #sessions {
+    background: var(--ink);
+  }
+
+  .sessions-timeline {
+    position: relative;
+    padding-left: 3rem;
+  }
+
+  .sessions-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--blood) 10%, var(--blood) 90%, transparent);
+  }
+
+  .session-entry {
+    position: relative;
+    margin-bottom: 2.5rem;
+    cursor: pointer;
+  }
+
+  .session-entry::before {
+    content: '';
+    position: absolute;
+    left: -3.35rem;
+    top: 0.8rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--blood);
+    border: 2px solid var(--blood-bright);
+    transition: all 0.3s;
+    box-shadow: 0 0 8px rgba(192,57,43,0.4);
+  }
+
+  .session-entry:hover::before {
+    background: var(--gold);
+    border-color: var(--gold-bright);
+    box-shadow: var(--glow-gold);
+    transform: scale(1.3);
+  }
+
+  .session-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .session-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.75rem;
+    color: var(--blood-bright);
+  }
+
+  .session-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--parchment);
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+
+  .session-entry:hover .session-name { color: var(--gold); }
+
+  .session-date {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    color: var(--mist);
+    letter-spacing: 0.15em;
+    margin-left: auto;
+  }
+
+  .session-summary {
+    font-size: 0.9rem;
+    color: var(--parchment-dark);
+    font-style: italic;
+    max-width: 680px;
+    line-height: 1.7;
+  }
+
+  .session-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+
+  .session-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mist);
+    border: 1px solid rgba(122,143,166,0.3);
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  /* ─── LORE FRAGMENTS ─── */
+  #lore {
+    background: radial-gradient(ellipse at 50% 0%, rgba(42,16,64,0.4) 0%, var(--ink) 60%);
+  }
+
+  .lore-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .lore-card {
+    background: linear-gradient(135deg, rgba(26,15,30,0.8), rgba(10,6,8,0.9));
+    border: 1px solid rgba(201,168,76,0.12);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .lore-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, transparent 50%, rgba(201,168,76,0.08) 50%);
+  }
+
+  .lore-card:hover {
+    border-color: rgba(201,168,76,0.3);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  }
+
+  .lore-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    opacity: 0.8;
+  }
+
+  .lore-category {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--blood-bright);
+    margin-bottom: 0.5rem;
+  }
+
+  .lore-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .lore-text {
+    font-size: 0.88rem;
+    color: var(--parchment-dark);
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .footer-sigil {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    opacity: 0.6;
+  }
+
+  .footer-text {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: linear-gradient(135deg, rgba(26,15,30,0.99), rgba(10,6,8,0.99));
+    border: 1px solid rgba(201,168,76,0.3);
+    max-width: 560px;
+    width: 100%;
+    padding: 3rem;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+    transform: translateY(20px);
+    transition: transform 0.3s;
+  }
+
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none;
+    border: none;
+    color: var(--mist);
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    transition: color 0.3s;
+  }
+
+  .modal-close:hover { color: var(--gold); }
+
+  .modal-sigil { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+
+  .modal-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+  }
+
+  .modal-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-rule {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--blood), transparent);
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-body {
+    font-size: 0.95rem;
+    color: var(--parchment-dark);
+    line-height: 1.8;
+    font-style: italic;
+  }
+
+  .modal-traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .modal-trait {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+  }
+
+  .trait-class { background: rgba(139,26,26,0.3); color: var(--blood-bright); border: 1px solid rgba(139,26,26,0.4); }
+  .trait-alignment { background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .trait-origin { background: rgba(122,143,166,0.1); color: var(--mist-light); border: 1px solid rgba(122,143,166,0.3); }
+
+  /* ─── FADE-IN SCROLL OBSERVE ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger children */
+  .stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .stagger.visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0s; }
+  .stagger.visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.1s; }
+  .stagger.visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.2s; }
+  .stagger.visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.3s; }
+  .stagger.visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.4s; }
+  .stagger.visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.5s; }
+
+  .map-enter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.35);
+    padding: 1rem 2rem;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    background: rgba(201,168,76,0.05);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .map-enter-btn:hover {
+    background: rgba(201,168,76,0.12);
+    border-color: rgba(201,168,76,0.6);
+    box-shadow: 0 0 30px rgba(201,168,76,0.15);
+    color: var(--gold-bright);
+  }
+  .map-enter-icon { font-size: 1.1rem; }
+  .map-enter-arrow {
+    font-size: 1rem;
+    transition: transform 0.3s;
+  }
+  .map-enter-btn:hover .map-enter-arrow { transform: translateX(5px); }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-sigil">✦ The Veil Unbound</div>
+  <ul class="nav-links">
+    <li><a href="#party">Party</a></li>
+    <li><a href="map.html">Map</a></li>
+    <li><a href="#relations">Relations</a></li>
+    <li><a href="#sessions">Sessions</a></li>
+    <li><a href="#lore">Lore</a></li>
+  </ul>
+  <div class="session-badge">Session 11 · Active Arc</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="mist-ring"></div>
+    <div class="mist-ring"></div>
+    <div class="mist-ring"></div>
+    <div class="mist-ring"></div>
+  </div>
+  <p class="hero-eyebrow">Act I · The Carnival of Echoes</p>
+  <h1 class="hero-title">
+    The Veil Unbound
+    <span>A Dark Fantasy Saga</span>
+  </h1>
+  <div class="hero-divider"></div>
+  <p class="hero-subtitle"><em>"Something stirs behind the curtain. Not a monster. Not a god. Something that has been waiting, very patiently, for exactly the right five people."</em></p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">11</div>
+      <div class="hero-stat-label">Sessions Played</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">6</div>
+      <div class="hero-stat-label">Current Level</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">5</div>
+      <div class="hero-stat-label">Souls Bound</div>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <span>Enter</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PARTY ROSTER -->
+<section id="party">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-tag">The Chosen</span>
+      <h2 class="section-title">Party Roster</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="party-grid stagger">
+      <div class="character-card" onclick="openModal('barnabas')">
+        <span class="char-level-badge">Lvl 6</span>
+        <span class="char-sigil">☯</span>
+        <div class="char-name">Barnabas</div>
+        <div class="char-race-class">Human · Monk · Way of Mercy</div>
+        <div class="char-desc">A veteran of the paranormal whose hands heal as surely as they harm. He came to the Carnival hunting answers. He found something hunting him.</div>
+      </div>
+      <div class="character-card" onclick="openModal('fippy')">
+        <span class="char-level-badge">Lvl 6</span>
+        <span class="char-sigil">⚗</span>
+        <div class="char-name">Fippy Darkfall</div>
+        <div class="char-race-class">Kobold · Alchemist · Dynamo</div>
+        <div class="char-desc">The sole survivor of a massacre that was never spoken of. Her concoctions crackle with volatile grief transmuted into energy.</div>
+      </div>
+      <div class="character-card" onclick="openModal('zaren')">
+        <span class="char-level-badge">Lvl 6</span>
+        <span class="char-sigil">♾</span>
+        <div class="char-name">Za'ren</div>
+        <div class="char-race-class">Yuan-Ti · Fighter · Echo Knight</div>
+        <div class="char-desc">A prince who fled his destiny, followed everywhere by an echo of himself — a ghost of what he might have become, or what he still will.</div>
+      </div>
+      <div class="character-card" onclick="openModal('clementine')">
+        <span class="char-level-badge">Lvl 6</span>
+        <span class="char-sigil">✵</span>
+        <div class="char-name">Clementine</div>
+        <div class="char-race-class">Elf · White Witch</div>
+        <div class="char-desc">Ancient elven power stirs in her blood, still unawakened. She watches gods debate like chess pieces. She wonders if she's one too.</div>
+      </div>
+      <div class="character-card" onclick="openModal('corwen')">
+        <span class="char-level-badge">Lvl 6</span>
+        <span class="char-sigil">✶</span>
+        <div class="char-name">Corwen</div>
+        <div class="char-race-class">Half-Elf/Aasimar · Sorcerer · Wild Magic</div>
+        <div class="char-desc">Wild magic surges through him, unpredictable as starfire. Something divine stirs at his core — though even Corwen doesn't know whose hand shaped him before birth.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LORE MAP -->
+<section id="lore-map">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-tag">The World</span>
+      <h2 class="section-title">Known Territories</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="reveal" style="text-align:center; padding: 3rem 2rem 4rem;">
+      <p style="font-family:'EB Garamond',serif; font-style:italic; font-size:1.1rem; color:var(--parchment-dark); max-width:520px; margin:0 auto 2.5rem; line-height:1.8;">
+        Aelthyra is vast. Its regions hold old names, older grudges, and secrets that predate the gods who claim to have made it. The map shows what is known. What is unmarked is not necessarily empty.
+      </p>
+      <a href="map.html" class="map-enter-btn">
+        <span class="map-enter-icon">🗺</span>
+        <span class="map-enter-text">Open the Map of Aelthyra</span>
+        <span class="map-enter-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- RELATIONSHIP WEB -->
+<section id="relations">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-tag">The Threads Between</span>
+      <h2 class="section-title">Character Web</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="web-container reveal">
+      <svg id="webSvg" width="100%" height="560" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="webBg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(42,16,64,0.3)"/>
+            <stop offset="100%" stop-color="rgba(10,6,8,0)"/>
+          </radialGradient>
+          <filter id="nodeGlow">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <rect width="900" height="560" fill="url(#webBg)"/>
+
+        <!-- EDGES - Party to Party -->
+        <line x1="450" y1="280" x2="240" y2="160" stroke="rgba(201,168,76,0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="450" y1="280" x2="660" y2="160" stroke="rgba(201,168,76,0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="450" y1="280" x2="200" y2="380" stroke="rgba(201,168,76,0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="450" y1="280" x2="700" y2="380" stroke="rgba(201,168,76,0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="240" y1="160" x2="660" y2="160" stroke="rgba(201,168,76,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="240" y1="160" x2="200" y2="380" stroke="rgba(201,168,76,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="660" y1="160" x2="700" y2="380" stroke="rgba(201,168,76,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="200" y1="380" x2="700" y2="380" stroke="rgba(201,168,76,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
+
+        <!-- EDGES - NPCs to relevant PCs -->
+        <!-- Penny <-> Barnabas strong -->
+        <line x1="450" y1="460" x2="200" y2="380" stroke="rgba(168,191,207,0.25)" stroke-width="2"/>
+        <!-- Maldrick -> Sanctuary/party threat -->
+        <line x1="130" y1="280" x2="240" y2="160" stroke="rgba(139,26,26,0.3)" stroke-width="1.5"/>
+        <line x1="130" y1="280" x2="450" y2="280" stroke="rgba(139,26,26,0.2)" stroke-width="1"/>
+        <!-- Caeluin -> Clementine/info -->
+        <line x1="770" y1="280" x2="660" y2="160" stroke="rgba(122,143,166,0.25)" stroke-width="1.5"/>
+        <!-- Wretch -> Carnival -->
+        <line x1="540" y1="470" x2="450" y2="280" stroke="rgba(138,43,226,0.2)" stroke-width="1.5"/>
+
+        <!-- ─ PARTY NODES ─ -->
+        <!-- CENTER: Corwen (the hidden keystone) -->
+        <g class="map-location" transform="translate(450, 280)" style="cursor:pointer">
+          <circle cx="0" cy="0" r="36" fill="rgba(138,43,226,0.1)" stroke="rgba(138,43,226,0.5)" stroke-width="1.5" filter="url(#nodeGlow)">
+            <animate attributeName="r" values="35;38;35" dur="4s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="0" cy="0" r="24" fill="rgba(42,16,64,0.9)" stroke="rgba(138,43,226,0.6)" stroke-width="2"/>
+          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(168,100,255,0.9); font-weight:bold;">Corwen</text>
+          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(138,43,226,0.6);">Wild Sorcerer</text>
+          <text x="0" y="-50" text-anchor="middle" style="font-family:'EB Garamond',serif; font-size:9px; fill:rgba(138,43,226,0.5); font-style:italic;">The Hidden Keystone</text>
+        </g>
+
+        <!-- Barnabas (top-left) -->
+        <g class="map-location" transform="translate(240, 160)" style="cursor:pointer">
+          <circle cx="0" cy="0" r="26" fill="rgba(10,6,8,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(201,168,76,0.9); font-weight:bold;">Barnabas</text>
+          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(201,168,76,0.4);">Monk · Mercy</text>
+        </g>
+
+        <!-- Za'ren (top-right) -->
+        <g class="map-location" transform="translate(660, 160)" style="cursor:pointer">
+          <circle cx="0" cy="0" r="26" fill="rgba(10,6,8,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(201,168,76,0.9); font-weight:bold;">Za'ren</text>
+          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(201,168,76,0.4);">Echo Knight</text>
+        </g>
+
+        <!-- Clementine (bottom-left) -->
+        <g class="map-location" transform="translate(200, 380)" style="cursor:pointer">
+          <circle cx="0" cy="0" r="26" fill="rgba(10,6,8,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(201,168,76,0.9); font-weight:bold;">Clementine</text>
+          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(201,168,76,0.4);">White Witch</text>
+        </g>
+
+        <!-- Fippy (bottom-right) -->
+        <g class="map-location" transform="translate(700, 380)" style="cursor:pointer">
+          <circle cx="0" cy="0" r="26" fill="rgba(10,6,8,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(201,168,76,0.9); font-weight:bold;">Fippy</text>
+          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(201,168,76,0.4);">Dynamo Alch.</text>
+        </g>
+
+        <!-- ─ NPC NODES ─ -->
+        <!-- Penny (bottom center, deceased/missing) -->
+        <g class="map-location" transform="translate(450, 460)" style="cursor:pointer">
+          <circle cx="0" cy="0" r="18" fill="rgba(10,6,8,0.9)" stroke="rgba(122,143,166,0.4)" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <text x="0" y="-1" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:10px; fill:rgba(168,191,207,0.7);">Penny</text>
+          <text x="0" y="11" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:7.5px; fill:rgba(168,191,207,0.4);">Quickstep</text>
+        </g>
+
+        <!-- Maldrick (left) -->
+        <g class="map-location" transform="translate(130, 280)" style="cursor:pointer">
+          <circle cx="0" cy="0" r="18" fill="rgba(10,6,8,0.9)" stroke="rgba(139,26,26,0.5)" stroke-width="1.5"/>
+          <text x="0" y="-1" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:10px; fill:rgba(192,57,43,0.8);">Maldrick</text>
+          <text x="0" y="11" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:7.5px; fill:rgba(139,26,26,0.5);">Corrupted</text>
+        </g>
+
+        <!-- Caeluin (right) -->
+        <g class="map-location" transform="translate(770, 280)" style="cursor:pointer">
+          <circle cx="0" cy="0" r="18" fill="rgba(10,6,8,0.9)" stroke="rgba(122,143,166,0.4)" stroke-width="1.5"/>
+          <text x="0" y="-1" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:10px; fill:rgba(168,191,207,0.7);">Caeluin</text>
+          <text x="0" y="11" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:7.5px; fill:rgba(122,143,166,0.4);">Ally</text>
+        </g>
+
+        <!-- Wretch (bottom-ish) -->
+        <g class="map-location" transform="translate(540, 470)" style="cursor:pointer">
+          <circle cx="0" cy="0" r="18" fill="rgba(10,6,8,0.9)" stroke="rgba(138,43,226,0.4)" stroke-width="1.5"/>
+          <text x="0" y="-1" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:10px; fill:rgba(138,43,226,0.7);">Wretch</text>
+          <text x="0" y="11" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:7.5px; fill:rgba(138,43,226,0.4);">Carnival</text>
+        </g>
+
+        <!-- Legend -->
+        <text x="20" y="540" style="font-family:'Cinzel',serif; font-size:9px; fill:rgba(201,168,76,0.4); letter-spacing:0.15em;">◉ PARTY MEMBER</text>
+        <text x="160" y="540" style="font-family:'Cinzel',serif; font-size:9px; fill:rgba(168,191,207,0.4); letter-spacing:0.15em;">◎ NPC ALLY</text>
+        <text x="280" y="540" style="font-family:'Cinzel',serif; font-size:9px; fill:rgba(192,57,43,0.4); letter-spacing:0.15em;">◎ NPC ENEMY</text>
+        <text x="400" y="540" style="font-family:'Cinzel',serif; font-size:9px; fill:rgba(138,43,226,0.4); letter-spacing:0.15em;">◎ CARNIVAL</text>
+        <text x="550" y="540" style="font-family:'EB Garamond',serif; font-size:9px; fill:rgba(138,43,226,0.35); font-style:italic;">✦ Corwen's true nature is still unfolding...</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- SESSION LOG -->
+<section id="sessions">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-tag">The Chronicle</span>
+      <h2 class="section-title">Session Log</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="sessions-timeline reveal">
+
+      <div class="session-entry">
+        <div class="session-header">
+          <span class="session-num">Session I</span>
+          <span class="session-name">The Carnival Arrives</span>
+          <span class="session-date">The Beginning</span>
+        </div>
+        <div class="session-summary">Five strangers with no reason to trust each other receive invitations to a carnival in Briar Glen. They attend. The lights are warm. The performers smile too widely. Something watches from behind the curtain.</div>
+        <div class="session-tags">
+          <span class="session-tag">Briar Glen</span>
+          <span class="session-tag">First Contact</span>
+          <span class="session-tag">No Combat</span>
+        </div>
+      </div>
+
+      <div class="session-entry">
+        <div class="session-header">
+          <span class="session-num">Session III</span>
+          <span class="session-name">Into Silverhollow</span>
+          <span class="session-date">Trade District · Day 1</span>
+        </div>
+        <div class="session-summary">The party arrives in Silverhollow's Trade District and prevents a tavern brawl, catching the eye of a harengon investigator named Penny Quickstep. She speaks of wrongness at the Radiant Sanctuary. A boy named Malcolm clutches a carnival coin and won't wake up.</div>
+        <div class="session-tags">
+          <span class="session-tag">Silverhollow</span>
+          <span class="session-tag">Penny Quickstep</span>
+          <span class="session-tag">Radiant Sanctuary</span>
+          <span class="session-tag">Malcolm</span>
+        </div>
+      </div>
+
+      <div class="session-entry">
+        <div class="session-header">
+          <span class="session-num">Session IV</span>
+          <span class="session-name">Silverhollow — Day 2</span>
+          <span class="session-date">Districts of Faith & Learning</span>
+        </div>
+        <div class="session-summary">The party investigates deeper into the Sanctuary's rot. Arch Scribe Caeluin identifies Malcolm's cursed coin — Shadowfell-touched, blending enchantment and necromancy. Sage Esser breaks the curse. Malcolm wakes. The party hears something they cannot unhear.</div>
+        <div class="session-tags">
+          <span class="session-tag">Shadowfell Coin</span>
+          <span class="session-tag">Caeluin</span>
+          <span class="session-tag">Curse Broken</span>
+        </div>
+      </div>
+
+      <div class="session-entry">
+        <div class="session-header">
+          <span class="session-num">Session V</span>
+          <span class="session-name">Thanksgiving Session</span>
+          <span class="session-date">The Sanctuary Descends</span>
+        </div>
+        <div class="session-summary">Tensions rise. The party presses deeper into Maldrick's domain. What they find in the Sanctuary's lower levels reveals how far the corruption has spread — and who let it in.</div>
+        <div class="session-tags">
+          <span class="session-tag">Maldrick</span>
+          <span class="session-tag">Corruption</span>
+          <span class="session-tag">Radiant Sanctuary</span>
+        </div>
+      </div>
+
+      <div class="session-entry">
+        <div class="session-header">
+          <span class="session-num">Session VI</span>
+          <span class="session-name">Confronting Maldrick</span>
+          <span class="session-date">The Confrontation</span>
+        </div>
+        <div class="session-summary">The party faces Maldrick directly. His betrayal of the Sanctuary is confirmed. A battle that forces each character to make a choice. The Shield of the First Dawn remains missing. Sister Ashpur, they learn, has been dead for fifteen years.</div>
+        <div class="session-tags">
+          <span class="session-tag">Boss Fight</span>
+          <span class="session-tag">Maldrick Defeated</span>
+          <span class="session-tag">Ashpur Dead</span>
+        </div>
+      </div>
+
+      <div class="session-entry">
+        <div class="session-header">
+          <span class="session-num">Session VII</span>
+          <span class="session-name">After Penny</span>
+          <span class="session-date">Leveled to 4 · Gilded Rest</span>
+        </div>
+        <div class="session-summary">The party recovers and debriefs. They return Paylor's shield. They argue over the Carnival's Shadowfell connection — and reach no resolution. Za'ren vanishes in the crowd. The Council summons them. They enter the Carnival early, in disguise.</div>
+        <div class="session-tags">
+          <span class="session-tag">Level 4</span>
+          <span class="session-tag">Council of Twelve</span>
+          <span class="session-tag">Infiltration</span>
+          <span class="session-tag">Grand Maester Wretch</span>
+        </div>
+      </div>
+
+      <div class="session-entry">
+        <div class="session-header">
+          <span class="session-num">Sessions VIII–IX</span>
+          <span class="session-name">Back to the Carnival</span>
+          <span class="session-date">Inside the Illusion</span>
+        </div>
+        <div class="session-summary">The party navigates the Carnival's interior in costume. The House of Mirrors reveals things. The Ferris Wheel offers a view from above. The big tent holds a puppet show that knows their names. Retch's office holds secrets. The illusion is thicker than ever — and something knows they're watching.</div>
+        <div class="session-tags">
+          <span class="session-tag">Carnival Interior</span>
+          <span class="session-tag">House of Mirrors</span>
+          <span class="session-tag">Wretch's Office</span>
+          <span class="session-tag">Disguises</span>
+        </div>
+      </div>
+
+      <div class="session-entry">
+        <div class="session-header">
+          <span class="session-num">Session XI</span>
+          <span class="session-name">The Shattered Spire, Pt. 2</span>
+          <span class="session-date">Leveled to 6 · The Embrace Tower</span>
+        </div>
+        <div class="session-summary">The party defeats the corrupted scholar Thessavra — Dr. Dune, transformed into a flesh wall by the Ember Shard. The Shattered Spire's darkness is cleared. An Ioun Stone is recovered. The party finds a handpainted portrait of a child named Markus, with a message on the back: <em>"please for Markus tell him I'm sorry."</em></div>
+        <div class="session-tags">
+          <span class="session-tag">Level 6</span>
+          <span class="session-tag">Thessavra</span>
+          <span class="session-tag">Ember Shard</span>
+          <span class="session-tag">Ioun Stone</span>
+          <span class="session-tag">Markus Mystery</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LORE FRAGMENTS -->
+<section id="lore">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-tag">What Is Known</span>
+      <h2 class="section-title">Lore Fragments</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="lore-grid stagger">
+
+      <div class="lore-card">
+        <span class="lore-icon">🎪</span>
+        <div class="lore-category">The Carnival</div>
+        <div class="lore-title">The Carnival of Echoes</div>
+        <div class="lore-text">It has no fixed location. It travels. It invites. Its coins carry Shadowfell-touched magic blending enchantment with necromancy. The Grand Maester Wretch denies any connection to the dark realm — but the evidence says otherwise.</div>
+      </div>
+
+      <div class="lore-card">
+        <span class="lore-icon">🌑</span>
+        <div class="lore-category">The Planes</div>
+        <div class="lore-title">The Shadowfell Connection</div>
+        <div class="lore-text">Something passed through the Feywild long ago. Dark, twisted fey creatures now exist in the Shadowfell — remnants of a carnival that has harvested across planes. Fey energy corrupted, displaced, absorbed. This is not the first time it has come for a world.</div>
+      </div>
+
+      <div class="lore-card">
+        <span class="lore-icon">🛡</span>
+        <div class="lore-category">Silverhollow</div>
+        <div class="lore-title">The Radiant Sanctuary</div>
+        <div class="lore-text">District 12. A holy site that rotted from within. High Priest Maldrick was corrupted — but by what, and when, remains unclear. The Shield of the First Dawn was stolen. Sister Ashpur has been dead for fifteen years. Someone was wearing her face.</div>
+      </div>
+
+      <div class="lore-card">
+        <span class="lore-icon">💎</span>
+        <div class="lore-category">Artifacts</div>
+        <div class="lore-title">The Ember Shard</div>
+        <div class="lore-text">Recovered from the Godwound by Dr. Dune — now called Thessavra. It granted a terrible power. The Identify revealed it can undo, but the cost is erasure. The party holds it now. What it truly is has not been named.</div>
+      </div>
+
+      <div class="lore-card">
+        <span class="lore-icon">🗺</span>
+        <div class="lore-category">Quests Active</div>
+        <div class="lore-title">Agaris's Map</div>
+        <div class="lore-text">Two sites were marked: Duskmire Sanctum in the northern forests of Velastra — former hagcraft ritual grounds — and the Shattered Spire, now cleared. The map suggests someone mapped these locations deliberately. Who is Agaris? And why these two sites?</div>
+      </div>
+
+      <div class="lore-card">
+        <span class="lore-icon">🧒</span>
+        <div class="lore-category">Mysteries</div>
+        <div class="lore-title">Markus</div>
+        <div class="lore-text">A handpainted portrait. A child. A message on the back: <em>"please for Markus tell him I'm sorry."</em> Found in the ruins of the Shattered Spire. No last name. No explanation. The child in Malcolm's vision was also called Markus.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="section-inner">
+    <div class="footer-sigil">✦</div>
+    <div class="footer-text">The Veil Unbound · Act I: The Carnival of Echoes · Session 11 · DM: Josh</div>
+    <p style="font-family:'EB Garamond',serif; font-style:italic; color:rgba(122,143,166,0.4); margin-top:0.75rem; font-size:0.85rem;">
+      "Every story worth telling is a door that opens both ways."
+    </p>
+  </div>
+</footer>
+
+<!-- CHARACTER MODALS -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    <span class="modal-sigil" id="modalSigil"></span>
+    <div class="modal-name" id="modalName"></div>
+    <div class="modal-subtitle" id="modalSubtitle"></div>
+    <div class="modal-rule"></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-traits" id="modalTraits"></div>
+  </div>
+</div>
+
+<script>
+// ─── CHARACTER DATA ───
+const characters = {
+  barnabas: {
+    sigil: '☯',
+    name: 'Barnabas',
+    subtitle: 'Human · Monk · Way of Mercy · Level 6',
+    body: 'A veteran of the paranormal — decades spent hunting what lives in the dark spaces between faith and reason. His hands are trained to both end suffering and ease it. He came to the Carnival of Echoes hunting answers to questions older than this campaign. He doesn\'t always realize that the answers are hunting him back.\n\nHe has seen too much to be surprised. Not enough to be prepared.',
+    traits: [
+      { label: 'Way of Mercy', type: 'class' },
+      { label: 'Paranormal Veteran', type: 'alignment' },
+      { label: 'Human', type: 'origin' },
+    ]
+  },
+  fippy: {
+    sigil: '⚗',
+    name: 'Fippy Darkfall',
+    subtitle: 'Kobold · Dynamo Alchemist · Level 6',
+    body: 'The sole survivor of a massacre that was never spoken of. The weight of that survival has transmuted inside her — not into despair, but into volatile, crackling energy that fuels her concoctions and drives her forward when the world gives her every reason to stop.\n\nShe is small. She is very, very dangerous. And she carries something the Carnival finds exceptionally nourishing.',
+    traits: [
+      { label: 'Dynamo Alchemist', type: 'class' },
+      { label: 'Last Survivor', type: 'alignment' },
+      { label: 'Kobold', type: 'origin' },
+    ]
+  },
+  zaren: {
+    sigil: '♾',
+    name: "Za'ren",
+    subtitle: 'Yuan-Ti · Fighter · Echo Knight · Level 6',
+    body: 'A prince who fled his destiny. His homeland — Nysharra — continues to be ravaged by forces he turned his back on. Everywhere he walks, a ghostly echo walks beside him, a mirror of a self he has not yet decided to become.\n\nThe Council of Twelve recognized him by blood. He has not yet decided whether that recognition is a resource or a trap. The echo has no such ambiguity.',
+    traits: [
+      { label: 'Echo Knight', type: 'class' },
+      { label: 'Exiled Prince', type: 'alignment' },
+      { label: 'Yuan-Ti · Nysharra', type: 'origin' },
+    ]
+  },
+  clementine: {
+    sigil: '✵',
+    name: 'Clementine',
+    subtitle: 'Elf · White Witch · Level 6',
+    body: 'Ancient elven power stirs in her bloodline, patient as deep water. She has watched gods debate like chess pieces — Torm and Azuth circling questions of duty and responsibility while the world unravels slowly and quietly beneath them.\n\nShe understands something the others are still learning: the enemy is not always the thing that wants to destroy you. Sometimes it is the things that want to use you.',
+    traits: [
+      { label: 'White Witch', type: 'class' },
+      { label: 'Observer', type: 'alignment' },
+      { label: 'Elf · Ancient Blood', type: 'origin' },
+    ]
+  },
+  corwen: {
+    sigil: '✶',
+    name: 'Corwen',
+    subtitle: 'Half-Elf/Aasimar · Wild Magic Sorcerer · Level 6',
+    body: 'Wild magic surges through him unpredictably — star fire that doesn\'t ask permission. His Aasimar nature radiates a frequency of divine energy that the Carnival has encountered before. He finds it very interesting.\n\nCorwen does not yet know that something touched him before birth. That the divine signature in his soul belongs to a god the others have not yet named. His player doesn\'t know either. The story does.',
+    traits: [
+      { label: 'Wild Magic Sorcerer', type: 'class' },
+      { label: 'Aasimar · Hidden Nature', type: 'alignment' },
+      { label: 'Half-Elf', type: 'origin' },
+    ]
+  }
+};
+
+function openModal(id) {
+  const c = characters[id];
+  if (!c) return;
+  document.getElementById('modalSigil').textContent = c.sigil;
+  document.getElementById('modalName').textContent = c.name;
+  document.getElementById('modalSubtitle').textContent = c.subtitle;
+  document.getElementById('modalBody').innerHTML = c.body.split('\n\n').map(p => `<p style="margin-bottom:1rem;">${p}</p>`).join('');
+  const traitsEl = document.getElementById('modalTraits');
+  traitsEl.innerHTML = c.traits.map(t => `<span class="modal-trait trait-${t.type}">${t.label}</span>`).join('');
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
+}
+
+function closeModalBtn() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+
+// ─── MAP TOOLTIP ───
+const mapLocations = document.querySelectorAll('#mapSvg .map-location');
+const tooltip = document.getElementById('mapTooltip');
+const mapWrapper = document.getElementById('mapWrapper');
+
+const statusLabels = {
+  visited:     { label: '● Visited Settlement', color: 'rgba(100,255,140,0.9)' },
+  interest:    { label: '◆ Point of Interest',  color: 'rgba(240,200,60,0.9)'  },
+  danger:      { label: '⚠ Dangerous Region',   color: 'rgba(220,80,60,0.9)'   },
+  supernatural:{ label: '✦ Supernatural',        color: 'rgba(168,100,255,0.9)' },
+};
+
+mapLocations.forEach(loc => {
+  loc.addEventListener('mouseenter', () => {
+    document.getElementById('ttName').textContent = loc.dataset.name;
+    document.getElementById('ttDesc').textContent = loc.dataset.desc;
+    const s = statusLabels[loc.dataset.status] || statusLabels.interest;
+    const statusEl = document.getElementById('ttStatus');
+    statusEl.textContent = s.label;
+    statusEl.style.color = s.color;
+    statusEl.className = 'tooltip-status';
+    tooltip.classList.add('visible');
+  });
+
+  loc.addEventListener('mousemove', (e) => {
+    const rect = mapWrapper.getBoundingClientRect();
+    let x = e.clientX - rect.left + 16;
+    let y = e.clientY - rect.top + 16;
+    if (x + 240 > rect.width) x = e.clientX - rect.left - 250;
+    if (y + 160 > rect.height) y = e.clientY - rect.top - 170;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top = y + 'px';
+  });
+
+  loc.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('visible');
+  });
+});
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal, .stagger').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
