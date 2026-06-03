@@ -885,7 +885,7 @@
   <ul class="nav-links">
     <li><a href="#party">Party</a></li>
     <li><a href="map.html">Map</a></li>
-    <li><a href="#relations">Relations</a></li>
+    <li><a href="#persons">Persons of Interest</a></li>
     <li><a href="#sessions">Sessions</a></li>
     <li><a href="#lore">Lore</a></li>
   </ul>
@@ -968,8 +968,8 @@
         <span class="char-level-badge">Lvl 6</span>
         <span class="char-sigil">✶</span>
         <div class="char-name">Corwen</div>
-        <div class="char-race-class">Half-Elf/Aasimar · Sorcerer · Wild Magic</div>
-        <div class="char-desc">Wild magic surges through him, unpredictable as starfire. Something divine stirs at his core — though even Corwen doesn't know whose hand shaped him before birth.</div>
+        <div class="char-race-class">Half-Elf · Sorcerer · Wild Magic</div>
+        <div class="char-desc">Wild magic surges through him, unpredictable as starfire. Every spell is a gamble — and so far, the odds have been interesting.</div>
       </div>
     </div>
   </div>
@@ -996,126 +996,16 @@
   </div>
 </section>
 
-<!-- RELATIONSHIP WEB -->
-<section id="relations">
+<!-- PERSONS OF INTEREST -->
+<section id="persons">
   <div class="section-inner">
     <div class="section-header reveal">
-      <span class="section-tag">The Threads Between</span>
-      <h2 class="section-title">Character Web</h2>
+      <span class="section-tag">Faces in the Dark</span>
+      <h2 class="section-title">Persons of Interest</h2>
       <div class="section-rule"></div>
     </div>
-    <div class="web-container reveal">
-      <svg id="webSvg" width="100%" height="560" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="webBg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="rgba(42,16,64,0.3)"/>
-            <stop offset="100%" stop-color="rgba(10,6,8,0)"/>
-          </radialGradient>
-          <filter id="nodeGlow">
-            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-        </defs>
-
-        <rect width="900" height="560" fill="url(#webBg)"/>
-
-        <!-- EDGES - Party to Party -->
-        <line x1="450" y1="280" x2="240" y2="160" stroke="rgba(201,168,76,0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <line x1="450" y1="280" x2="660" y2="160" stroke="rgba(201,168,76,0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <line x1="450" y1="280" x2="200" y2="380" stroke="rgba(201,168,76,0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <line x1="450" y1="280" x2="700" y2="380" stroke="rgba(201,168,76,0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <line x1="240" y1="160" x2="660" y2="160" stroke="rgba(201,168,76,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
-        <line x1="240" y1="160" x2="200" y2="380" stroke="rgba(201,168,76,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
-        <line x1="660" y1="160" x2="700" y2="380" stroke="rgba(201,168,76,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
-        <line x1="200" y1="380" x2="700" y2="380" stroke="rgba(201,168,76,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
-
-        <!-- EDGES - NPCs to relevant PCs -->
-        <!-- Penny <-> Barnabas strong -->
-        <line x1="450" y1="460" x2="200" y2="380" stroke="rgba(168,191,207,0.25)" stroke-width="2"/>
-        <!-- Maldrick -> Sanctuary/party threat -->
-        <line x1="130" y1="280" x2="240" y2="160" stroke="rgba(139,26,26,0.3)" stroke-width="1.5"/>
-        <line x1="130" y1="280" x2="450" y2="280" stroke="rgba(139,26,26,0.2)" stroke-width="1"/>
-        <!-- Caeluin -> Clementine/info -->
-        <line x1="770" y1="280" x2="660" y2="160" stroke="rgba(122,143,166,0.25)" stroke-width="1.5"/>
-        <!-- Wretch -> Carnival -->
-        <line x1="540" y1="470" x2="450" y2="280" stroke="rgba(138,43,226,0.2)" stroke-width="1.5"/>
-
-        <!-- ─ PARTY NODES ─ -->
-        <!-- CENTER: Corwen (the hidden keystone) -->
-        <g class="map-location" transform="translate(450, 280)" style="cursor:pointer">
-          <circle cx="0" cy="0" r="36" fill="rgba(138,43,226,0.1)" stroke="rgba(138,43,226,0.5)" stroke-width="1.5" filter="url(#nodeGlow)">
-            <animate attributeName="r" values="35;38;35" dur="4s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="0" cy="0" r="24" fill="rgba(42,16,64,0.9)" stroke="rgba(138,43,226,0.6)" stroke-width="2"/>
-          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(168,100,255,0.9); font-weight:bold;">Corwen</text>
-          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(138,43,226,0.6);">Wild Sorcerer</text>
-          <text x="0" y="-50" text-anchor="middle" style="font-family:'EB Garamond',serif; font-size:9px; fill:rgba(138,43,226,0.5); font-style:italic;">The Hidden Keystone</text>
-        </g>
-
-        <!-- Barnabas (top-left) -->
-        <g class="map-location" transform="translate(240, 160)" style="cursor:pointer">
-          <circle cx="0" cy="0" r="26" fill="rgba(10,6,8,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
-          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(201,168,76,0.9); font-weight:bold;">Barnabas</text>
-          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(201,168,76,0.4);">Monk · Mercy</text>
-        </g>
-
-        <!-- Za'ren (top-right) -->
-        <g class="map-location" transform="translate(660, 160)" style="cursor:pointer">
-          <circle cx="0" cy="0" r="26" fill="rgba(10,6,8,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
-          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(201,168,76,0.9); font-weight:bold;">Za'ren</text>
-          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(201,168,76,0.4);">Echo Knight</text>
-        </g>
-
-        <!-- Clementine (bottom-left) -->
-        <g class="map-location" transform="translate(200, 380)" style="cursor:pointer">
-          <circle cx="0" cy="0" r="26" fill="rgba(10,6,8,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
-          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(201,168,76,0.9); font-weight:bold;">Clementine</text>
-          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(201,168,76,0.4);">White Witch</text>
-        </g>
-
-        <!-- Fippy (bottom-right) -->
-        <g class="map-location" transform="translate(700, 380)" style="cursor:pointer">
-          <circle cx="0" cy="0" r="26" fill="rgba(10,6,8,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
-          <text x="0" y="-2" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:11px; fill:rgba(201,168,76,0.9); font-weight:bold;">Fippy</text>
-          <text x="0" y="12" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:8px; fill:rgba(201,168,76,0.4);">Dynamo Alch.</text>
-        </g>
-
-        <!-- ─ NPC NODES ─ -->
-        <!-- Penny (bottom center, deceased/missing) -->
-        <g class="map-location" transform="translate(450, 460)" style="cursor:pointer">
-          <circle cx="0" cy="0" r="18" fill="rgba(10,6,8,0.9)" stroke="rgba(122,143,166,0.4)" stroke-width="1.5" stroke-dasharray="3,3"/>
-          <text x="0" y="-1" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:10px; fill:rgba(168,191,207,0.7);">Penny</text>
-          <text x="0" y="11" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:7.5px; fill:rgba(168,191,207,0.4);">Quickstep</text>
-        </g>
-
-        <!-- Maldrick (left) -->
-        <g class="map-location" transform="translate(130, 280)" style="cursor:pointer">
-          <circle cx="0" cy="0" r="18" fill="rgba(10,6,8,0.9)" stroke="rgba(139,26,26,0.5)" stroke-width="1.5"/>
-          <text x="0" y="-1" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:10px; fill:rgba(192,57,43,0.8);">Maldrick</text>
-          <text x="0" y="11" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:7.5px; fill:rgba(139,26,26,0.5);">Corrupted</text>
-        </g>
-
-        <!-- Caeluin (right) -->
-        <g class="map-location" transform="translate(770, 280)" style="cursor:pointer">
-          <circle cx="0" cy="0" r="18" fill="rgba(10,6,8,0.9)" stroke="rgba(122,143,166,0.4)" stroke-width="1.5"/>
-          <text x="0" y="-1" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:10px; fill:rgba(168,191,207,0.7);">Caeluin</text>
-          <text x="0" y="11" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:7.5px; fill:rgba(122,143,166,0.4);">Ally</text>
-        </g>
-
-        <!-- Wretch (bottom-ish) -->
-        <g class="map-location" transform="translate(540, 470)" style="cursor:pointer">
-          <circle cx="0" cy="0" r="18" fill="rgba(10,6,8,0.9)" stroke="rgba(138,43,226,0.4)" stroke-width="1.5"/>
-          <text x="0" y="-1" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:10px; fill:rgba(138,43,226,0.7);">Wretch</text>
-          <text x="0" y="11" text-anchor="middle" style="font-family:'Cinzel',serif; font-size:7.5px; fill:rgba(138,43,226,0.4);">Carnival</text>
-        </g>
-
-        <!-- Legend -->
-        <text x="20" y="540" style="font-family:'Cinzel',serif; font-size:9px; fill:rgba(201,168,76,0.4); letter-spacing:0.15em;">◉ PARTY MEMBER</text>
-        <text x="160" y="540" style="font-family:'Cinzel',serif; font-size:9px; fill:rgba(168,191,207,0.4); letter-spacing:0.15em;">◎ NPC ALLY</text>
-        <text x="280" y="540" style="font-family:'Cinzel',serif; font-size:9px; fill:rgba(192,57,43,0.4); letter-spacing:0.15em;">◎ NPC ENEMY</text>
-        <text x="400" y="540" style="font-family:'Cinzel',serif; font-size:9px; fill:rgba(138,43,226,0.4); letter-spacing:0.15em;">◎ CARNIVAL</text>
-        <text x="550" y="540" style="font-family:'EB Garamond',serif; font-size:9px; fill:rgba(138,43,226,0.35); font-style:italic;">✦ Corwen's true nature is still unfolding...</text>
-      </svg>
+    <div class="reveal" style="text-align:center; padding: 4rem 2rem; color: var(--parchment-dark); font-family:'EB Garamond',serif; font-style:italic; font-size:1.1rem; opacity:0.5;">
+      — Records being compiled —
     </div>
   </div>
 </section>
@@ -1381,11 +1271,10 @@ const characters = {
   corwen: {
     sigil: '✶',
     name: 'Corwen',
-    subtitle: 'Half-Elf/Aasimar · Wild Magic Sorcerer · Level 6',
-    body: 'Wild magic surges through him unpredictably — star fire that doesn\'t ask permission. His Aasimar nature radiates a frequency of divine energy that the Carnival has encountered before. He finds it very interesting.\n\nCorwen does not yet know that something touched him before birth. That the divine signature in his soul belongs to a god the others have not yet named. His player doesn\'t know either. The story does.',
+    subtitle: 'Half-Elf · Wild Magic Sorcerer · Level 6',
+    body: 'Wild magic surges through him unpredictably — star fire that doesn\'t ask permission. Every spell cast is a roll of the dice, and Corwen has learned to lean into the chaos rather than fight it.\n\nHe moves through the world with the easy confidence of someone who has made peace with uncertainty. Whether that peace will hold as the Carnival tightens its grip remains to be seen.',
     traits: [
       { label: 'Wild Magic Sorcerer', type: 'class' },
-      { label: 'Aasimar · Hidden Nature', type: 'alignment' },
       { label: 'Half-Elf', type: 'origin' },
     ]
   }
