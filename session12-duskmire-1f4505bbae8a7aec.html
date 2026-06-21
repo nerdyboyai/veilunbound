@@ -149,6 +149,24 @@
   .music-intro { background: #0a0d14; border: 1px solid #203040; border-left: 3px solid var(--mist); border-radius: 0 4px 4px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: var(--parchment-dim); line-height: 1.6; }
   .music-intro strong { color: var(--mist); }
 
+  /* HP TRACKER */
+  .hp-tracker { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-bright); }
+  .hp-tracker-head { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--blood-bright); margin-bottom: 10px; }
+  .hp-unit { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .hp-unit:last-child { border-bottom: none; }
+  .hp-id { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold-dim); min-width: 34px; }
+  .hp-maxlbl { font-size: 11px; color: var(--parchment-dim); display: flex; align-items: center; gap: 4px; font-family: 'Cinzel', serif; letter-spacing: 1px; text-transform: uppercase; }
+  .hp-max, .hp-amt { width: 62px; background: var(--void); border: 1px solid var(--border-bright); color: var(--parchment); border-radius: 3px; padding: 5px 7px; font-family: 'Crimson Pro', serif; font-size: 15px; }
+  .hp-max:focus, .hp-amt:focus { outline: none; border-color: var(--gold); }
+  .hp-cur { font-family: 'Cinzel', serif; font-weight: 700; font-size: 20px; color: var(--rot-bright); min-width: 70px; text-align: center; }
+  .hp-unit.is-hurt .hp-cur { color: var(--warning); }
+  .hp-unit.is-down .hp-cur { color: var(--blood-bright); font-size: 13px; letter-spacing: 2px; }
+  .hp-btn { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 1px; padding: 6px 11px; border-radius: 3px; cursor: pointer; border: 1px solid var(--border-bright); background: var(--panel); color: var(--parchment-dim); transition: background .15s, color .15s; }
+  .hp-btn:hover { background: var(--surface); color: var(--parchment); }
+  .hp-dmg { border-color: var(--blood); color: var(--blood-bright); }
+  .hp-heal { border-color: var(--rot); color: var(--rot-bright); }
+  @media (max-width: 640px) { .hp-cur { min-width: 52px; font-size: 18px; } .hp-id { min-width: 28px; } }
+
   /* TABLE ROLEPLAY */
   .party-rp { background: linear-gradient(180deg, #1c1408, #140f08); border: 1px solid var(--warning-dim); border-left: 3px solid var(--warning); border-radius: 0 4px 4px 0; padding: 22px 26px 18px; margin: 24px 0; font-size: 15px; color: #e6c79a; position: relative; }
   .party-rp::before { content: '🎭'; position: absolute; top: -11px; left: 18px; font-size: 14px; background: #140f08; padding: 0 6px; }
@@ -478,7 +496,7 @@
       <div class="stat-card"><div class="stat-label">Terrain</div><div class="stat-value red">Knee-deep water — difficult terrain throughout</div></div>
       <div class="stat-card"><div class="stat-label">Visibility</div><div class="stat-value">Murky — Perception at disadvantage in water</div></div>
     </div>
-    <div class="creature">
+    <div class="creature" data-hp="38" data-count="4">
       <div class="creature-name">Drowned Penitent (×4)</div>
       <div class="creature-type">Medium Undead — CR 1 each (Zombie base + modifications)</div>
       <div class="creature-stats"><span>HP: <strong>38</strong></span><span>AC: <strong>8</strong></span><span>Speed: <strong>20 ft (10 ft in water)</strong></span><span>STR <strong>16</strong> / CON <strong>16</strong></span></div>
@@ -487,7 +505,7 @@
       <div class="creature-ability"><strong>Waterlogged Grasp:</strong> On hit, target makes DC 13 Strength save or is Restrained until start of their next turn.</div>
       <div class="creature-ability"><strong>Immunities:</strong> Poison damage, Poisoned condition.</div>
     </div>
-    <div class="creature">
+    <div class="creature" data-hp="65" data-count="1">
       <div class="creature-name">Waterlogged Priest</div>
       <div class="creature-type">Medium Undead — CR 3 (modified Wight)</div>
       <div class="creature-stats"><span>HP: <strong>65</strong></span><span>AC: <strong>14</strong></span><span>Speed: <strong>30 ft</strong></span><span>STR <strong>15</strong> / WIS <strong>16</strong></span></div>
@@ -595,7 +613,7 @@
       <div class="stat-card"><div class="stat-label">Terrain</div><div class="stat-value red">Narrow corridors, crumbling floor sections, dim light only</div></div>
       <div class="stat-card"><div class="stat-label">Purpose</div><div class="stat-value red">Maximum resource drain before the climax</div></div>
     </div>
-    <div class="creature">
+    <div class="creature" data-hp="85" data-count="2">
       <div class="creature-name">Sanctum Warden (×2)</div>
       <div class="creature-type">Large Construct (Corrupted Divine) — CR 4 each</div>
       <div class="creature-stats"><span>HP: <strong>85</strong></span><span>AC: <strong>16</strong></span><span>Speed: <strong>30 ft</strong></span><span>STR <strong>19</strong> / CON <strong>18</strong></span></div>
@@ -605,7 +623,7 @@
       <div class="creature-ability"><strong>Sacred Rupture (Recharge 6):</strong> 15 ft cone. DC 15 Dex save. 4d8 necrotic on fail, half on success. Failures also have HP maximum reduced by half the damage dealt until long rest.</div>
       <div class="creature-ability"><strong>Resistances:</strong> Bludgeoning, piercing, slashing from non-magical weapons.</div>
     </div>
-    <div class="creature">
+    <div class="creature" data-hp="78" data-count="1">
       <div class="creature-name">Hollow Penitent</div>
       <div class="creature-type">Medium Undead (Corrupted Cleric) — CR 5</div>
       <div class="creature-stats"><span>HP: <strong>78</strong></span><span>AC: <strong>13</strong></span><span>Speed: <strong>30 ft</strong></span><span>INT <strong>16</strong> / WIS <strong>18</strong> / CHA <strong>14</strong></span></div>
@@ -680,7 +698,7 @@
       <div class="encounter-difficulty diff-deadly">Deadly (Context-Dependent)</div>
     </div>
     <p class="body">The Cambion is not the fight. The Cambion is the clock.</p>
-    <div class="creature">
+    <div class="creature" data-hp="82" data-count="1">
       <div class="creature-name">The Grey Companion (Cambion)</div>
       <div class="creature-type">Medium Fiend — CR 5, modified</div>
       <div class="creature-stats"><span>HP: <strong>82</strong></span><span>AC: <strong>13</strong></span><span>Speed: <strong>30 ft, fly 60 ft</strong></span><span>STR <strong>18</strong> / CHA <strong>18</strong></span></div>
@@ -825,5 +843,85 @@
 </div>
 
 </div>
+<script>
+(function () {
+  function buildUnit(i, count, max) {
+    var state = { max: max, cur: max };
+    var u = document.createElement('div');
+    u.className = 'hp-unit';
+
+    var id = document.createElement('span');
+    id.className = 'hp-id';
+    id.textContent = count > 1 ? ('#' + i) : 'HP';
+
+    var maxLbl = document.createElement('label');
+    maxLbl.className = 'hp-maxlbl';
+    maxLbl.appendChild(document.createTextNode('Max'));
+    var maxIn = document.createElement('input');
+    maxIn.type = 'number'; maxIn.className = 'hp-max'; maxIn.value = max; maxIn.min = 1;
+    maxLbl.appendChild(maxIn);
+
+    var cur = document.createElement('span');
+    cur.className = 'hp-cur';
+
+    var amt = document.createElement('input');
+    amt.type = 'number'; amt.className = 'hp-amt'; amt.placeholder = '±'; amt.min = 0;
+
+    var dmg = document.createElement('button');
+    dmg.type = 'button'; dmg.className = 'hp-btn hp-dmg'; dmg.textContent = '– Dmg';
+    var heal = document.createElement('button');
+    heal.type = 'button'; heal.className = 'hp-btn hp-heal'; heal.textContent = '+ Heal';
+    var rst = document.createElement('button');
+    rst.type = 'button'; rst.className = 'hp-btn hp-reset'; rst.textContent = 'Reset';
+
+    function render() {
+      cur.textContent = state.cur <= 0 ? 'DOWN' : state.cur;
+      u.classList.toggle('is-down', state.cur <= 0);
+      u.classList.toggle('is-hurt', state.cur > 0 && state.cur <= state.max / 2);
+    }
+    maxIn.addEventListener('change', function () {
+      var nm = parseInt(maxIn.value, 10);
+      if (isNaN(nm) || nm < 1) { nm = 1; maxIn.value = 1; }
+      var delta = nm - state.max;
+      state.max = nm;
+      state.cur = Math.max(0, Math.min(nm, state.cur + delta));
+      render();
+    });
+    function applyDmg() {
+      var v = parseInt(amt.value, 10);
+      if (isNaN(v)) return;
+      state.cur = Math.max(0, state.cur - v); amt.value = ''; render();
+    }
+    function applyHeal() {
+      var v = parseInt(amt.value, 10);
+      if (isNaN(v)) return;
+      state.cur = Math.min(state.max, state.cur + v); amt.value = ''; render();
+    }
+    dmg.addEventListener('click', applyDmg);
+    heal.addEventListener('click', applyHeal);
+    rst.addEventListener('click', function () { state.cur = state.max; render(); });
+    amt.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); applyDmg(); } });
+
+    u.appendChild(id); u.appendChild(maxLbl); u.appendChild(cur);
+    u.appendChild(amt); u.appendChild(dmg); u.appendChild(heal); u.appendChild(rst);
+    render();
+    return u;
+  }
+
+  document.querySelectorAll('.creature[data-hp]').forEach(function (c) {
+    var max = parseInt(c.getAttribute('data-hp'), 10);
+    var count = parseInt(c.getAttribute('data-count') || '1', 10);
+    if (isNaN(max)) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'hp-tracker';
+    var head = document.createElement('div');
+    head.className = 'hp-tracker-head';
+    head.textContent = 'Live HP Tracker';
+    wrap.appendChild(head);
+    for (var i = 1; i <= count; i++) wrap.appendChild(buildUnit(i, count, max));
+    c.appendChild(wrap);
+  });
+})();
+</script>
 </body>
 </html>
