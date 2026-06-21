@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Session 12 — Duskmire Sanctum</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #080608; --deep: #100d12; --surface: #18141c; --panel: #1e1924;
+    --border: #2e2535; --border-bright: #4a3d58;
+    --parchment: #e8dcc8; --parchment-dim: #b8a898;
+    --gold: #c8943a; --gold-bright: #e8b84a; --gold-dim: #7a5820;
+    --blood: #8b1818; --blood-bright: #c02828;
+    --rot: #4a6830; --rot-bright: #6a9840; --rot-dim: #2a3818;
+    --mist: #7090a8; --mist-dim: #405868;
+    --warning: #c87030; --warning-dim: #7a4018;
+    --purple: #6840a0; --purple-bright: #9860d8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background-color: var(--void); font-family: 'Crimson Pro', Georgia, serif; color: var(--parchment); line-height: 1.7; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.6; }
+  .page { max-width: 980px; margin: 0 auto; padding: 60px 40px 100px; }
+
+  /* HEADER */
+  .master-header { text-align: center; padding: 50px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 60px; position: relative; }
+  .master-header::after { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 120px; height: 1px; background: var(--gold); }
+  .session-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 8px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 16px; }
+  .session-title { font-family: 'Cinzel', serif; font-size: clamp(26px, 4vw, 44px); font-weight: 900; color: var(--parchment); line-height: 1.15; letter-spacing: 1px; margin-bottom: 8px; }
+  .session-title span { color: var(--rot-bright); }
+  .session-sub { font-style: italic; font-size: 18px; color: var(--parchment-dim); margin-top: 10px; }
+  .session-meta { display: flex; justify-content: center; gap: 40px; margin-top: 24px; font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; color: var(--mist-dim); text-transform: uppercase; flex-wrap: wrap; }
+  .session-meta span { color: var(--gold); }
+
+  /* SECTION BREAKS */
+  .section-break { display: flex; align-items: center; gap: 16px; margin: 56px 0 28px; }
+  .section-break::before { content: ''; flex: 1; height: 1px; background: linear-gradient(to left, var(--border), transparent); }
+  .section-break::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+  .section-title { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+
+  /* SCENE HEADERS */
+  .scene { margin-bottom: 48px; }
+  .scene-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .scene-num { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold-dim); letter-spacing: 3px; flex-shrink: 0; }
+  .scene-name { font-family: 'Cinzel', serif; font-size: 17px; font-weight: 700; color: var(--parchment); letter-spacing: 0.5px; flex: 1; }
+  .scene-tag { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; flex-shrink: 0; }
+  .tag-travel { background: var(--rot-dim); color: var(--rot-bright); border: 1px solid var(--rot); }
+  .tag-social { background: #1a2035; color: var(--mist); border: 1px solid var(--mist-dim); }
+  .tag-explore { background: #201828; color: var(--purple-bright); border: 1px solid var(--purple); }
+  .tag-combat { background: #200810; color: var(--blood-bright); border: 1px solid var(--blood); }
+  .tag-climax { background: #201008; color: var(--warning); border: 1px solid var(--warning-dim); }
+  .tag-road { background: #101820; color: #80b0c8; border: 1px solid #304858; }
+
+  /* READ ALOUD */
+  .read-aloud { background: var(--deep); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; padding: 24px 28px; margin: 20px 0; font-style: italic; font-size: 17px; color: var(--parchment); line-height: 1.8; position: relative; }
+  .read-aloud::before { content: '📖'; position: absolute; top: -10px; left: 20px; font-size: 14px; background: var(--deep); padding: 0 6px; }
+  .read-aloud p + p { margin-top: 14px; }
+
+  /* DM NOTES */
+  .dm-note { background: #0c0a14; border: 1px solid #2a2050; border-left: 3px solid #5040a0; border-radius: 0 4px 4px 0; padding: 18px 22px; margin: 16px 0; font-size: 15px; color: #a090d0; }
+  .dm-note strong { color: #c0b0ff; }
+  .dm-note-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 4px; color: #5040a0; text-transform: uppercase; margin-bottom: 8px; }
+  .dm-note p + p { margin-top: 10px; }
+
+  /* DM SECRETS */
+  .dm-secret { background: #0f0808; border: 1px solid #501818; border-left: 3px solid var(--blood); border-radius: 0 4px 4px 0; padding: 18px 22px; margin: 16px 0; font-size: 15px; color: #c09090; }
+  .dm-secret strong { color: #ffb0b0; }
+  .dm-secret-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 4px; color: var(--blood); text-transform: uppercase; margin-bottom: 8px; }
+  .dm-secret p + p { margin-top: 10px; }
+
+  /* CALLOUTS */
+  .callout { background: var(--rot-dim); border: 1px solid var(--rot); border-left: 3px solid var(--rot-bright); border-radius: 0 4px 4px 0; padding: 16px 20px; margin: 16px 0; font-size: 15px; color: #c0e0a0; }
+  .callout strong { color: #e0ffd0; }
+  .callout p + p { margin-top: 8px; }
+
+  /* ENCOUNTER BLOCKS */
+  .encounter-block { background: var(--panel); border: 1px solid var(--border); border-top: 2px solid var(--blood); border-radius: 4px; padding: 28px; margin: 24px 0; }
+  .encounter-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+  .encounter-name { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: var(--blood-bright); }
+  .encounter-difficulty { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; padding: 4px 12px; border-radius: 2px; }
+  .diff-hard { background: #200808; color: var(--blood-bright); border: 1px solid var(--blood); }
+  .diff-deadly { background: #180408; color: #ff6060; border: 1px solid #801010; }
+
+  /* STAT GRID */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; }
+  .stat-card { background: var(--deep); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
+  .stat-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 4px; }
+  .stat-value { font-size: 14px; color: var(--parchment); font-weight: 600; }
+  .stat-value.red { color: var(--blood-bright); }
+
+  /* CREATURES */
+  .creature { background: var(--deep); border: 1px solid var(--border); border-radius: 4px; padding: 22px 24px; margin: 16px 0; }
+  .creature-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .creature-type { font-style: italic; font-size: 14px; color: var(--parchment-dim); margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .creature-stats { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 14px; font-size: 14px; }
+  .creature-stats span { color: var(--parchment-dim); }
+  .creature-stats strong { color: var(--parchment); }
+  .creature-ability { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 15px; color: var(--parchment-dim); }
+  .creature-ability strong { color: var(--gold-bright); }
+
+  /* LOOT */
+  .loot-block { background: var(--panel); border: 1px solid var(--border); border-top: 2px solid var(--gold); border-radius: 4px; padding: 22px 26px; margin: 20px 0; }
+  .loot-header { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; color: var(--gold); letter-spacing: 2px; margin-bottom: 14px; text-transform: uppercase; }
+  .loot-item { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 15px; }
+  .loot-item:last-child { border-bottom: none; }
+  .loot-item-name { color: var(--gold-bright); font-weight: 600; min-width: 220px; flex-shrink: 0; }
+  .loot-item-desc { color: var(--parchment-dim); }
+  .loot-sub .loot-item-name { color: var(--gold); font-weight: 400; padding-left: 16px; }
+
+  /* NPC BLOCKS */
+  .npc-block { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--mist); border-radius: 0 4px 4px 0; padding: 22px 26px; margin: 20px 0; }
+  .npc-name { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: var(--mist); margin-bottom: 4px; }
+  .npc-role { font-style: italic; font-size: 14px; color: var(--parchment-dim); margin-bottom: 14px; }
+  .npc-detail { margin-top: 8px; font-size: 15px; color: var(--parchment-dim); line-height: 1.65; }
+  .npc-detail strong { color: var(--parchment); }
+
+  /* SKILL CHECKS */
+  .skill-check { background: var(--panel); border: 1px solid var(--border); border-radius: 4px; margin: 20px 0; overflow: hidden; }
+  .skill-check-header { background: #1a1528; padding: 14px 20px; border-bottom: 2px solid var(--gold); font-family: 'Cinzel', serif; font-size: 13px; color: var(--gold-bright); letter-spacing: 2px; }
+  .skill-check-header span { color: var(--parchment); font-size: 12px; letter-spacing: 1px; }
+  .skill-row { display: grid; grid-template-columns: 90px 1fr; font-size: 15px; border-bottom: 1px solid var(--border); }
+  .skill-row:last-child { border-bottom: none; }
+  .skill-row:nth-child(odd) { background: #1a1520; }
+  .skill-row:nth-child(even) { background: #201a28; }
+  .skill-range { padding: 10px 14px; font-weight: 700; color: var(--gold-bright); border-right: 1px solid var(--border); display: flex; align-items: center; font-size: 14px; }
+  .skill-result { padding: 10px 16px; color: var(--parchment-dim); line-height: 1.6; }
+
+  /* TIMING TRACK */
+  .timing-track { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 20px 0; }
+  .timing-card { background: var(--deep); border: 1px solid var(--border); border-radius: 4px; padding: 18px; }
+  .timing-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+  .timing-early .timing-label { color: var(--rot-bright); }
+  .timing-ontime .timing-label { color: var(--gold); }
+  .timing-late .timing-label { color: var(--blood-bright); }
+  .timing-card p { font-size: 14px; color: var(--parchment-dim); line-height: 1.6; }
+
+  /* ROAD BEATS */
+  .road-beat { background: var(--deep); border: 1px solid var(--border); border-radius: 4px; padding: 20px 24px; margin: 14px 0; }
+  .road-beat-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 4px; color: #80b0c8; text-transform: uppercase; margin-bottom: 10px; }
+  .road-beat p { font-size: 15px; color: var(--parchment-dim); line-height: 1.7; }
+  .road-beat p + p { margin-top: 8px; }
+
+  /* SOUNDTRACK CUES */
+  .music-cue { background: #0a0d14; border: 1px solid var(--border); border-left: 3px solid var(--mist); border-radius: 0 4px 4px 0; padding: 14px 16px 12px; margin: 18px 0; }
+  .music-cue-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--mist); margin-bottom: 10px; }
+  .music-cue-label span { color: var(--parchment-dim); letter-spacing: 1px; }
+  .music-cue iframe { display: block; border: 0; }
+  .music-intro { background: #0a0d14; border: 1px solid #203040; border-left: 3px solid var(--mist); border-radius: 0 4px 4px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: var(--parchment-dim); line-height: 1.6; }
+  .music-intro strong { color: var(--mist); }
+
+  /* TABLE ROLEPLAY */
+  .party-rp { background: linear-gradient(180deg, #1c1408, #140f08); border: 1px solid var(--warning-dim); border-left: 3px solid var(--warning); border-radius: 0 4px 4px 0; padding: 22px 26px 18px; margin: 24px 0; font-size: 15px; color: #e6c79a; position: relative; }
+  .party-rp::before { content: '🎭'; position: absolute; top: -11px; left: 18px; font-size: 14px; background: #140f08; padding: 0 6px; }
+  .party-rp .rp-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 4px; color: var(--warning); text-transform: uppercase; margin-bottom: 6px; }
+  .party-rp .rp-lead { font-style: italic; color: #f0d9b0; margin-bottom: 10px; line-height: 1.65; }
+  .party-rp strong { color: var(--gold-bright); }
+  .party-rp em { color: #f0d9b0; }
+  .rp-prompt { padding: 7px 0 7px 22px; position: relative; line-height: 1.6; border-bottom: 1px solid rgba(122,64,24,0.28); }
+  .rp-prompt:last-child { border-bottom: none; }
+  .rp-prompt::before { content: '▸'; position: absolute; left: 2px; color: var(--warning); }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; margin: 12px 0; }
+  .checklist li { padding: 7px 0; padding-left: 24px; position: relative; font-size: 15px; color: var(--parchment-dim); border-bottom: 1px solid var(--border); line-height: 1.6; }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before { content: '□'; position: absolute; left: 0; color: var(--border-bright); }
+
+  /* BODY TEXT */
+  p.body { font-size: 16px; color: var(--parchment-dim); margin-bottom: 12px; line-height: 1.75; }
+  p.body strong { color: var(--parchment); }
+
+  /* QUESTIONS */
+  .questions-block { background: #0a0c10; border: 1px solid #203040; border-top: 2px solid var(--mist); border-radius: 4px; padding: 28px; margin-top: 60px; }
+  .questions-title { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 5px; color: var(--mist); text-transform: uppercase; margin-bottom: 20px; }
+  .question-item { padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 15px; display: flex; gap: 14px; }
+  .question-item:last-child { border-bottom: none; }
+  .q-num { font-family: 'Cinzel', serif; font-size: 11px; color: var(--mist); min-width: 28px; padding-top: 2px; flex-shrink: 0; }
+  .q-text { color: var(--parchment-dim); line-height: 1.65; }
+  .q-text strong { color: var(--parchment); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .page { padding: 24px 16px 60px; }
+    .timing-track { grid-template-columns: 1fr; }
+    .session-meta { gap: 12px; font-size: 9px; }
+    .loot-item { flex-direction: column; gap: 4px; }
+    .loot-item-name { min-width: unset; }
+    .skill-row { grid-template-columns: 72px 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ MASTER HEADER ══ -->
+<div class="master-header">
+  <div class="session-label">The Veil Unbound · Act I · Session 12</div>
+  <h1 class="session-title">The <span>Duskmire Sanctum</span></h1>
+  <div class="session-sub">Where the rot remembers what the gods forgot</div>
+  <div class="session-meta">
+    Party Level: <span>6</span> &nbsp;·&nbsp; Players: <span>5 (Za'ren Present)</span> &nbsp;·&nbsp;
+    Tone: <span>Dark Fantasy Horror / Heroic Epic</span> &nbsp;·&nbsp; Stakes: <span>Campaign-Defining</span>
+  </div>
+</div>
+
+<!-- ══ SESSION OVERVIEW ══ -->
+<div class="section-break"><div class="section-title">Session Overview</div></div>
+<p class="body">The party — including Za'ren — wakes rested in the Shattered Spire's Sanctuary Room at Level 6, the Sundered Diamond and Ember Shard secured. They descend the tower, travel 2.5 days northwest across Velastra's open plains and into hilly terrain, and arrive at Thornmere — a hamlet on the edge of the Duskmire swamp. There they learn two strangers passed through days ago heading exactly where they are going. Inside the sinking ruins of a drowned village and its half-submerged temple, they uncover what Agares has been building toward. They will arrive, explore, be tested — and will almost certainly be too late.</p>
+<p class="body"><strong>Primary Goal:</strong> Reach the Duskmire Sanctum's inner chamber. Witness or interrupt Agares' ascension rite. Leave changed.</p>
+<p class="body"><strong>Secondary Goal:</strong> Barnabas and Fippy find threads that pull them personally into this location.</p>
+<p class="body"><strong>Narrative Engine:</strong> The party is always slightly behind. Every delay tightens the clock. This is cause and effect, not DM fiat.</p>
+<div class="music-intro">♪ <strong>Soundtrack:</strong> Each scene and major fight has a Spotify player built in — hit play when you reach that beat. Tracks are from <strong>Michael Ghelfi</strong>, looped for table use. For full-length playback, log into Spotify in this browser first (otherwise you'll get 30-second previews). One deliberate exception: at Agares' seven words, <strong>cut the music</strong> and let the room go silent.</div>
+
+<!-- ══ SCENE 1 ══ -->
+<div class="section-break"><div class="section-title">Scene 1 — The Sanctuary Room</div></div>
+<div class="scene">
+  <div class="scene-header">
+    <div class="scene-num">01</div>
+    <div class="scene-name">The Weight of Level Six</div>
+    <div class="scene-tag tag-explore">Roleplay / Transition</div>
+  </div>
+  <div class="music-cue">
+    <div class="music-cue-label">♪ Soundtrack <span>— "Hope" · quiet, reflective morning-after</span></div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3MKfniSDnj9UgqSR1kvVB3?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <div class="read-aloud">
+    <p>The Sanctuary Room keeps its quiet like a held breath. Bare stone walls, a floor scrubbed clean of the tower's corruption, and the low hum of a ward some long-dead hand pressed into the threshold — something that said <em>not here</em> to whatever moved through the floors above. You slept the whole night through, no dreams. The first true rest since you set foot on the Spire's lowest stair.</p>
+    <p>The Sundered Diamond waits in its open case, throwing off a warmth the cold rock around it has no business allowing. Beside it the Ember Shard turns its two sparks in a slow, patient orbit. Thessavra's screams have faded to memory. The tower overhead is gutted, empty, dead.</p>
+    <p>You are rested, and you are not the people who climbed in here. The work of this place has set into you the way tempering sets into a blade — and you can feel the new weight of yourselves when you stand.</p>
+  </div>
+  <div class="dm-note">
+    <div class="dm-note-label">DM Note — Opening Beat</div>
+    <p>Give them the moment. Let each player acknowledge the level-up however they wish in character. Za'ren is present — his psychic vulnerability from the Spire has passed with the long rest, though whatever his sister showed him in that dream lingers. The Sundered Diamond will generate immediate table conversation — three meaningful choices, mutually exclusive. Don't push them toward one. The tension is the reward.</p>
+    <p>After 10–15 minutes, move them toward descent. The air smells of rain and rot. The swamp is northwest. It has always been northwest.</p>
+  </div>
+  <div class="loot-block">
+    <div class="loot-header">The Sundered Diamond — Case Contents</div>
+    <div class="loot-item"><div class="loot-item-name">The Sundered Diamond</div><div class="loot-item-desc">A fist-sized raw diamond, uncut, radiating faint warmth. Ancient — locked deliberately by scholars who knew exactly what it was. Three uses, mutually exclusive:</div></div>
+    <div class="loot-item loot-sub"><div class="loot-item-name">— Sell It</div><div class="loot-item-desc">Worth 1,500gp to the right buyer (arcane scholar, noble collector, major temple). ~800gp on the open market.</div></div>
+    <div class="loot-item loot-sub"><div class="loot-item-name">— Resurrection Component</div><div class="loot-item-desc">Counts as the full material component for Raise Dead or Resurrection. Fully consumed on use.</div></div>
+    <div class="loot-item loot-sub"><div class="loot-item-name">— Speak with Dead (1 use)</div><div class="loot-item-desc">Attune to the diamond. Cast Speak with Dead once, no components required. Diamond then goes cold and dark — retains ~700gp sale value.</div></div>
+  </div>
+  <div class="dm-note">
+    <div class="dm-note-label">Why Did the Scholars Have This?</div>
+    <p>The diamond was locked in an identified case — they knew what it was. Why did scholars working in a corrupted celestial tower have a resurrection-grade diamond under lock and key? Were they expecting casualties? Protecting something irreplaceable? You don't need to answer. But the players may ask, and the question is worth leaving open.</p>
+  </div>
+
+  <div class="party-rp">
+    <div class="rp-label">Table Roleplay — The Quiet Hour</div>
+    <div class="rp-lead">This is the only unhurried hour the party gets all session. Don't rush them out of it — spend it.</div>
+    <div class="rp-prompt">Go around the table. Each player names one small, private thing their character does now that the climb is over: a wound finally tended, a whispered prayer, a letter that never got sent, a long look at someone they nearly lost up there.</div>
+    <div class="rp-prompt">Put the Sundered Diamond on the table — a token, if you've got one. Ask the question out loud: <em>if it came to it, who would each of you bring back?</em> Let them argue. Let them not agree.</div>
+    <div class="rp-prompt">Whoever wants the diamond has to say why, to the others' faces. Whoever doesn't want it spent has to say that too.</div>
+  </div>
+</div>
+
+<!-- ══ SCENE 2 ══ -->
+<div class="section-break"><div class="section-title">Scene 2 — The Descent</div></div>
+<div class="scene">
+  <div class="scene-header">
+    <div class="scene-num">02</div>
+    <div class="scene-name">What the Tower Leaves You With</div>
+    <div class="scene-tag tag-explore">Exploration</div>
+  </div>
+  <div class="music-cue">
+    <div class="music-cue-label">♪ Soundtrack <span>— "Abandoned Village" · the gutted, empty tower</span></div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7LQwLObxS89z92UY8NiYY6?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <div class="read-aloud">
+    <p>The climb down through the Shattered Spire passes without a fight. The mechanical spiders lie where they fell. The floors are silent. But the tower still has things to show you on the way out — arcane residue smearing the air in certain doorways, a scholar's notes curling off a rotted corkboard.</p>
+    <p>The fourth-floor kitchen stops you. Someone set this table, once. Six plates, three chairs — they always meant to drag in more chairs — and cups gone to grey dust. A duty roster hangs on the chalkboard beside the shelf. The last entry carries a date and then breaks off mid-word, as if the writer was called away and never made it back.</p>
+    <p>Outside, the dead land around the Spire runs flat to every horizon. Northwest, the world starts to change — greener, lower, wetter. You can't see the swamp yet. You can smell it from here: standing water and slow, patient rot.</p>
+  </div>
+  <div class="dm-note">
+    <div class="dm-note-label">The Duty Roster</div>
+    <p>One name on the roster shares a surname with the portrait the party found — <em>"please, for Markus, tell him I'm sorry."</em> Pure flavor continuity. No player needs to notice. But if they do, honor it.</p>
+  </div>
+</div>
+
+<!-- ══ SCENE 3 — THE ROAD ══ -->
+<div class="section-break"><div class="section-title">Scene 3 — The Road to Thornmere</div></div>
+<div class="scene">
+  <div class="scene-header">
+    <div class="scene-num">03</div>
+    <div class="scene-name">Two and a Half Days Northwest</div>
+    <div class="scene-tag tag-road">Travel / Decompression</div>
+  </div>
+  <div class="music-cue">
+    <div class="music-cue-label">♪ Soundtrack <span>— "Meadow Campfire" · the road, the open sky, the fire</span></div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0aApHGiifQTetsPTjWG9rO?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <p class="body">The journey from the Shattered Spire to Thornmere takes two and a half days on foot across Velastra's open interior. The landscape changes slowly: the barren dead ground around the Spire gives way to open plains, then to gently rolling hills, and finally — on the morning of the third day — to a thickening tree line at the edge of a forest that presses up against Thornmere's southern boundary. The road is old. It has seen better decades. But it holds.</p>
+  <p class="body">There are no fights on this road. What there is: time. Space. The particular weight of carrying things you haven't yet decided what to do with.</p>
+
+  <div class="dm-secret">
+    <div class="dm-secret-label">⚠ DM Eyes Only — The Feeling of Being Watched</div>
+    <p>From the moment the party leaves the Spire, they are being watched. Not by an agent. Not by a creature. By <strong>Yssovare himself</strong> — the Veiled God, whose crystallized mortal heart the party now carries in the form of the Ember Shard. He is aware of it moving through the world. He is aware of them.</p>
+    <p>This is not a threat and not an action. It is simply attention. The kind of attention a god pays when something sacred to him is in motion. The party will feel it and will not understand it. They may never connect it to the Shard. That is correct. This secret runs long.</p>
+    <p>Do not over-describe the sensation. It should be ambient, persistent, and slightly wrong — like a sound just below hearing, or a shadow in peripheral vision that is never there when you look directly at it.</p>
+  </div>
+
+  <div class="road-beat">
+    <div class="road-beat-label">Day One — The Plains</div>
+    <p>Open sky, open ground. The Spire shrinks behind them. For the first time in days there is no ceiling pressing down. The party is free to breathe and decompress — this is the place for campfire conversation, debate about the Sundered Diamond, questions about what they saw in the Spire's deepest floors. Encourage roleplay. Let them talk about what they're carrying, literally and otherwise.</p>
+    <p>By nightfall, the first campfire. And with it — very quietly, noticed only if a player mentions it — the faint, persistent sense that the darkness just past the firelight is paying attention. Not hostile. Attentive. A DC 14 Perception check to notice it consciously. A DC 18 to feel it as something directed rather than ambient.</p>
+  </div>
+
+  <div class="skill-check">
+    <div class="skill-check-header">PERCEPTION — Something in the Dark &nbsp;<span>Passive or Active, Night Camps</span></div>
+    <div class="skill-row"><div class="skill-range">1–13</div><div class="skill-result">Nothing. The plains are quiet. Whatever watches does so at a distance you cannot feel.</div></div>
+    <div class="skill-row"><div class="skill-range">14–17</div><div class="skill-result">A sensation, not a sound. The darkness at the edge of the firelight feels occupied in a way you can't justify. Nothing moves. Nothing is there when you look. But the feeling doesn't leave.</div></div>
+    <div class="skill-row"><div class="skill-range">18–20</div><div class="skill-result">It is not random. Whatever you're sensing is specifically oriented toward your group — not the road, not the plains, not the fire. You. This is not an animal. This is something with intent and patience, watching from a distance that isn't quite physical.</div></div>
+    <div class="skill-row"><div class="skill-range">21+</div><div class="skill-result">As above, and for just a moment you have the disorienting impression that what is watching is not watching from out there at all. It is watching from something you are carrying. The feeling passes before you can hold it.</div></div>
+  </div>
+
+  <div class="party-rp">
+    <div class="rp-label">Table Roleplay — Around the First Fire</div>
+    <div class="rp-lead">The road is space the dungeon never gives them. Use the first night to let the party just be people for a while.</div>
+    <div class="rp-prompt">Open it up: what does each character carry out of the Spire that they haven't said out loud yet? Pair people who rarely talk — let two players pick a conversation and run it without you steering.</div>
+    <div class="rp-prompt">Go around once for watch order. Whoever takes the late watch sits alone with the fire — a quiet window for one player to show you something private about their character.</div>
+    <div class="rp-prompt">If a player notices the watched feeling, don't explain it. Let them raise it to the group and decide together whether it's nerves or something real. The not-knowing is the scene.</div>
+  </div>
+
+  <div class="road-beat">
+    <div class="road-beat-label">Day Two — The Hills</div>
+    <p>The plains fold upward into gentle hillocks. The road winds. The sky is overcast — not threatening, just grey and heavy. This is a good day for quieter character moments: Za'ren processing what he experienced in the Spire's psychic resonance, Barnabas moving with the deliberate quiet of someone turning something over in his mind, Clementine perhaps looking at her blue book and finding — or not finding — something she thought she remembered seeing.</p>
+    <p>The watched feeling is stronger today. Still ambient, still wordless. But persistent in the way a headache persists — noticeable precisely because it never quite goes away.</p>
+    <p>Toward afternoon: a Wild Magic moment for Corwen. Low-stakes, character-illuminating. Suggested: he reaches for something mundane — lighting a pipe, warming his hands, a small cantrip — and something else comes out instead. Brief, strange, and with the specific quality of wild magic that feels less like randomness and more like something is looking through the window of his power from the other side. Roll on a wild magic table or pick a moment that fits the scene.</p>
+  </div>
+
+  <div class="dm-note">
+    <div class="dm-note-label">Corwen's Wild Magic — Tone Note</div>
+    <p>Keep this light and grounded rather than spectacular. The point isn't a big magical event — it's a moment that reminds the table that Corwen's power has a quality that isn't entirely his own. The wild magic feels slightly <em>watched</em> when it fires. Just a beat. Just a texture. Justin doesn't need to understand why. The moment passes.</p>
+  </div>
+
+  <div class="road-beat">
+    <div class="road-beat-label">Day Two, Evening — The Merchant</div>
+    <p>On the downslope of the last hill before the tree line, heading the opposite direction: a merchant with a loaded mule and the careful pace of someone who has been doing this route long enough to know not to hurry. He is friendly in the way of people who travel alone and appreciate conversation. He has been through Thornmere three days ago heading south.</p>
+  </div>
+
+  <div class="npc-block">
+    <div class="npc-name">Oswin Tetch</div>
+    <div class="npc-role">Itinerant merchant, 50s, round-faced, good boots. Trades dried goods and small sundries between Velastra's interior hamlets. Has been doing this route for twenty years.</div>
+    <div class="npc-detail"><strong>Manner:</strong> Easy, direct, no agenda. Happy to share what he knows. Won't be pushed to speculate beyond what he saw.</div>
+    <div class="npc-detail"><strong>Rumor A:</strong> <em>"Place has been dead quiet for years. Then three, four days back, smoke rising from the direction of the old sanctum. Not campfire smoke. The wrong color. Folks in Thornmere won't talk about it much. The woman who runs the place — Dunhollow — she was watching that smoke all morning with an expression I didn't like."</em></div>
+    <div class="npc-detail"><strong>Rumor D:</strong> <em>"Heard one of the old families there lost a son last season. Young man, went into the swamp on a dare. They found his boots. That's all they found. The swamp gives back boots, apparently. Not much else."</em> He says this matter-of-factly, the way you report a local fact you have accepted. <em>"I'd say stay out of that swamp, but you've got the look of people who are going to anyway."</em></div>
+    <div class="npc-detail"><strong>If asked about the old sanctum:</strong> <em>"I don't know anything about it except that it's been there longer than anyone alive and everyone in Thornmere pretends it isn't. You know how places get. Some things, you just stop looking at after a while."</em></div>
+    <div class="npc-detail"><strong>If asked about the smoke:</strong> He thinks on this. <em>"Purple-black. Like something burning that didn't want to burn. I saw it two mornings running, then it stopped. Figured whatever it was, it was done."</em></div>
+  </div>
+
+  <div class="dm-note">
+    <div class="dm-note-label">The Merchant — What He Tells Them</div>
+    <p>Oswin is purely informational. He has no hidden agenda. Let the party ask their questions and answer them honestly. He knows nothing about the Ordo, nothing about Agares by name, and nothing about the Counting Coven. He just moves goods and observes the world around him. His value is the clock confirmation: the smoke two mornings running that then stopped. The rite is in progress. They are behind.</p>
+    <p>When the conversation ends, he wishes them well with the specific warmth of someone who does not expect to see travelers who go toward the Duskmire come back. He continues south. He doesn't look back.</p>
+  </div>
+
+  <div class="road-beat">
+    <div class="road-beat-label">Day Three, Morning — The Forest Edge</div>
+    <p>The road enters the tree line an hour before Thornmere. The forest here is old — not the horror of the Duskmire swamp, but dense and quiet in the way old forests are quiet. Light comes through in columns. The road is mulched with decades of leaf fall. The air is cooler and smells of earth and something faintly damp.</p>
+    <p>This is where Fippy's unease begins.</p>
+  </div>
+
+  <div class="dm-secret">
+    <div class="dm-secret-label">⚠ Fippy — Growing Unease (Player-Specific, Subtle)</div>
+    <p>As the party enters the forest and closes the distance to Thornmere and the Duskmire beyond, Fippy begins to feel something he cannot name. It is not fear exactly. It is more like the particular discomfort of a memory that won't surface — something that wants to be recognized and can't quite be.</p>
+    <p><strong>Source — both things at once:</strong> His brand is responding to proximity to long-standing coven activity in this region. The Counting Coven has had a watch on the Duskmire Sanctum for generations. The runic geometry of his brand is, at some deep level, attuned to the coven's presence. He is getting closer to something that his brand knows even when he doesn't.</p>
+    <p><strong>How to play it:</strong> Don't announce this to the player directly. Describe it physically — a faint prickling where the brand sits, a restlessness he can't account for, the specific sensation of being slightly too aware of his own skin. If Joshi asks what his character feels, give him the sensation without the explanation. He doesn't know why. That is correct.</p>
+    <p><strong>It is not dangerous. It is not a warning.</strong> It is recognition without context. The answer to what it means is in a collapsed side chapel ahead of him, carved into a dead person's wrist bone.</p>
+  </div>
+
+  <div class="skill-check">
+    <div class="skill-check-header">FIPPY — Arcana or Nature (Instinct Check, Forest Edge) &nbsp;<span>DC 12, Unsolicited</span></div>
+    <div class="skill-row"><div class="skill-range">1–11</div><div class="skill-result">The forest feels normal. Whatever is unsettling him has no name he can attach to it.</div></div>
+    <div class="skill-row"><div class="skill-range">12–15</div><div class="skill-result">The feeling is coming from somewhere ahead, not from around him. It isn't the forest. It's something beyond the forest that the forest is adjacent to.</div></div>
+    <div class="skill-row"><div class="skill-range">16–20</div><div class="skill-result">His brand is the source of the sensation. He can feel it — faintly, unmistakably — as if it is reacting to something at a frequency the rest of him can't hear. It has never done this before.</div></div>
+    <div class="skill-row"><div class="skill-range">21+</div><div class="skill-result">As above. And for just a moment, the geometry of the brand pulses against his skin — not painfully, just present, the way a scar reminds you it exists when the weather changes. It will get stronger the closer they get to the swamp.</div></div>
+  </div>
+
+  <div class="road-beat">
+    <div class="road-beat-label">Arriving at Thornmere</div>
+    <p>The forest opens. The hamlet resolves from the tree line — twelve buildings, a well, a stubbornness. Beyond it, the landscape softens and darkens. The trees thin into something wetter. The smell changes. They have arrived.</p>
+  </div>
+</div>
+
+<!-- ══ SCENE 4 ══ -->
+<div class="section-break"><div class="section-title">Scene 4 — Thornmere</div></div>
+<div class="scene">
+  <div class="scene-header">
+    <div class="scene-num">04</div>
+    <div class="scene-name">The Hamlet at the Edge of the Rot</div>
+    <div class="scene-tag tag-social">Social</div>
+  </div>
+  <div class="music-cue">
+    <div class="music-cue-label">♪ Soundtrack <span>— "Isolated Village" · wary Thornmere</span></div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0uiQJv0VJnZjrZYeCOLjTl?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <p class="body">Thornmere is not quite a village. It's twelve buildings, a well, and a stubbornness. These people have lived on the edge of the Duskmire for three generations. They are not afraid of it — they are careful of it, the way you are careful of a neighbour whose dog bites. They are suspicious of travellers who ask about the Sanctum, because travellers who ask about the Sanctum always mean trouble.</p>
+  <div class="read-aloud">
+    <p>Thornmere announces itself as a smell first — woodsmoke, and under it something sour and fermenting. Then the buildings resolve from the tree line: low structures, grey-thatched and practical, hunched at the edge of ground that cooperates a little less with every step. The road ends here. Past the last building the earth softens, the trees thicken, and the light goes thin and grey.</p>
+    <p>A woman is splitting wood near the well. She stops when she sees you. She doesn't run, doesn't call out — she just watches, axe loose in one hand, with the flat patience of someone who got over being frightened of things a long while ago and now simply takes their measure.</p>
+    <p>Behind her, a deep herb garden sprawls along the south wall of the cottage — a dense, half-wild tangle of plants, vegetables, and stranger things you'd have to crouch down to name. The garden of someone who has been growing things for forty years and long since stopped arranging them for any eye but her own.</p>
+  </div>
+
+  <div class="npc-block">
+    <div class="npc-name">Maret Dunhollow</div>
+    <div class="npc-role">Thornmere's self-appointed caretaker. 60s, Velastra human. Permanent scowl of someone who has seen enough.</div>
+    <div class="npc-detail"><strong>Voice:</strong> Economical. Minimum words. Silence is a tool. She releases information in exchange for something that seems worth it.</div>
+    <div class="npc-detail"><strong>What she knows:</strong> <em>"Two strangers, four days ago. One was tall, impeccably dressed — had the kind of smile that means something is wrong with the teeth behind it. He wore red. His companion didn't speak. They asked about the old path to the Sanctum. I told them there was no safe path. They laughed. They left."</em></div>
+    <div class="npc-detail"><strong>On the Sanctum:</strong> <em>"That place has been sinking for as long as my grandmother's grandmother could remember. The village that used to be there — we don't speak its name. The people who built that temple thought they'd found something worth worshipping. They found something, all right."</em></div>
+    <div class="npc-detail"><strong>On the old village:</strong> <em>"The priests changed first. Started talking about the worship differently. Not the god they'd always served — something older, something that was watching before the gods had names for watching. The village followed because villages follow priests. The swamp followed because the swamp follows everything."</em></div>
+    <div class="npc-detail"><strong>What she gives:</strong> Directions to the firm path. A warning: <em>"If you hear singing — and you might — don't follow it. And don't answer back."</em> She does not explain further.</div>
+  </div>
+
+  <div class="skill-check">
+    <div class="skill-check-header">INSIGHT — Reading Maret &nbsp;<span>DC 13</span></div>
+    <div class="skill-row"><div class="skill-range">1–5</div><div class="skill-result">She seems hostile and deliberately unhelpful. You're wasting your time here.</div></div>
+    <div class="skill-row"><div class="skill-range">6–10</div><div class="skill-result">She's not hostile — she's cautious. She's seen what happens to people who go to the Sanctum and she doesn't want to feel responsible for more of it.</div></div>
+    <div class="skill-row"><div class="skill-range">11–15</div><div class="skill-result">She knows more than she's saying about the two strangers. The description of the tall man in red made her uncomfortable in a way she covered quickly.</div></div>
+    <div class="skill-row"><div class="skill-range">16–20</div><div class="skill-result">She's afraid — not of you, but of what is happening at the Sanctum right now. She can feel it. People who live on the edge of something wrong for three generations develop instincts. Something has changed in the swamp in the past few days.</div></div>
+    <div class="skill-row"><div class="skill-range">21+</div><div class="skill-result">She has been to the Sanctum. Once. Young. She has never told anyone what she saw. She will not tell you now, but you know the question exists.</div></div>
+  </div>
+
+  <div class="callout"><strong>Barnabas Hook:</strong> A worn symbol carved above Maret's door — a stylized hand with two fingers raised. Barnabas recognizes it immediately as an Ordo ward marker. Someone from his order passed through here, possibly years ago, and left a sign. Maret, if asked: <em>"Big fellow. Very serious. Said he was hunting something in the swamp. He didn't come back."</em> She says this with the blankness of someone who expected it.</div>
+
+  <div class="callout"><strong>Fippy Hook (Subtle):</strong> Among the dozens of herbs and vegetables in Maret's garden, Fippy spots one specific plant near the fence line. It has no practical use outside of coven binding rituals. Not alarming on its own — it grows wild in swamp country. But Fippy knows why someone would cultivate it deliberately, and this woman has clearly been growing it for years. If asked, Maret says a woman whose name she never knew paid her to keep a patch going. Years back. Never explained why.</div>
+
+  <div class="party-rp">
+    <div class="rp-label">Table Roleplay — Earning Maret's Words</div>
+    <div class="rp-lead">Maret gives nothing for free. Make the party work the conversation, not the dice.</div>
+    <div class="rp-prompt">She answers in trade, not charity. Before she'll talk about the strangers in red, ask each player what their character actually offers — coin, a day's labour, news from the road, an honest answer to a question of her own.</div>
+    <div class="rp-prompt">The ward marker over her door is Barnabas's to raise. Let that player choose: ask in front of everyone, or hold it back? It's an order matter. Make sharing it cost something.</div>
+    <div class="rp-prompt">If the party gets grabby or rude, she simply stops talking and goes back to her wood. Reward patience here, not pressure.</div>
+  </div>
+</div>
+
+<!-- ══ SCENE 5 ══ -->
+<div class="section-break"><div class="section-title">Scene 5 — The Duskmire Approach</div></div>
+<div class="scene">
+  <div class="scene-header">
+    <div class="scene-num">05</div>
+    <div class="scene-name">Through the Swamp</div>
+    <div class="scene-tag tag-travel">Travel / Hazard</div>
+  </div>
+  <div class="music-cue">
+    <div class="music-cue-label">♪ Soundtrack <span>— "Dark Swamp" · the Duskmire approach</span></div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3bolKvaZ7Xs0tKnCXNu5Mh?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <div class="read-aloud">
+    <p>The path Maret described holds for the first hour. After that it turns into a suggestion, and then into something you keep walking only because you've decided to call it a path. Water climbs the roots of trees that have been dead so long they've forgotten what killed them.</p>
+    <p>The smell deepens — thick, organic, wrong. Not the sharp reek of fresh rot but something settled and ancient, the air of a place where something terrible happened a very long time ago and the land never closed over the wound.</p>
+    <p>Then the buildings begin. Or what the swamp left of them. Half-submerged stone walls breaking the water. A chimney standing alone with no house left around it. A doorframe rooted in black water, opening onto nothing, still upright as though it expects the rest of the house to come back for it. This village didn't burn. It drowned — slowly, inch by inch, year by year, until the swamp closed over the last roof like a mouth.</p>
+  </div>
+  <p class="body"><strong>Swamp Hazard — Rot Sickness:</strong> Run this check <strong>twice</strong> — once entering the village ruins, once entering the Sanctum. Each PC makes a <strong>DC 13 Constitution saving throw</strong>. Failure: <em>Rot Fatigue</em> — disadvantage on Constitution saving throws until a short rest outside the swamp or magical healing. This stacks.</p>
+
+  <div class="skill-check">
+    <div class="skill-check-header">PERCEPTION — Reading the Swamp Path &nbsp;<span>DC 12</span></div>
+    <div class="skill-row"><div class="skill-range">1–5</div><div class="skill-result">You lose the path entirely. The party spends an extra 30 minutes wading through deeper water. Each PC makes the Rot Sickness save now, in addition to the standard check at the village ruins.</div></div>
+    <div class="skill-row"><div class="skill-range">6–10</div><div class="skill-result">You keep to the firmer ground Maret described, though it's slow going. Standard pace.</div></div>
+    <div class="skill-row"><div class="skill-range">11–15</div><div class="skill-result">You spot a natural ridge of harder ground running parallel to your route — slightly longer but significantly drier. You arrive at the village ruins in better condition.</div></div>
+    <div class="skill-row"><div class="skill-range">16–20</div><div class="skill-result">You find a path through the submerged village ruins that avoids the deepest water and most unstable stonework. No Rot Sickness check required for the village approach.</div></div>
+    <div class="skill-row"><div class="skill-range">21+</div><div class="skill-result">As above, and you notice recent footprints in the silt. Two sets. One large and deliberate. One that barely registers weight at all. They are ahead of you. Not by much.</div></div>
+  </div>
+
+  <!-- ENCOUNTER 1 -->
+  <div class="encounter-block">
+    <div class="encounter-header">
+      <div class="encounter-name">⚔ Encounter 1 — The Sunk Things</div>
+      <div class="encounter-difficulty diff-hard">Hard</div>
+    </div>
+    <div class="music-cue">
+      <div class="music-cue-label">♪ Combat <span>— "Medieval Battle" · the drowned rise</span></div>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7GYsFkvFVrem0hUMnsJFzp?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <p class="body">As the party wades through the flooded village ruins, they disturb something. The corpses of the original villagers — drowned, preserved imperfectly by corrupted water, animated by centuries of inverted divine energy — rise from the mud.</p>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-label">Enemies</div><div class="stat-value">4 Drowned Penitents + 1 Waterlogged Priest</div></div>
+      <div class="stat-card"><div class="stat-label">Terrain</div><div class="stat-value red">Knee-deep water — difficult terrain throughout</div></div>
+      <div class="stat-card"><div class="stat-label">Visibility</div><div class="stat-value">Murky — Perception at disadvantage in water</div></div>
+    </div>
+    <div class="creature">
+      <div class="creature-name">Drowned Penitent (×4)</div>
+      <div class="creature-type">Medium Undead — CR 1 each (Zombie base + modifications)</div>
+      <div class="creature-stats"><span>HP: <strong>38</strong></span><span>AC: <strong>8</strong></span><span>Speed: <strong>20 ft (10 ft in water)</strong></span><span>STR <strong>16</strong> / CON <strong>16</strong></span></div>
+      <div class="creature-ability"><strong>Waterborn:</strong> Ignores difficult terrain in water. Can submerge as a bonus action — attacks against it have disadvantage until it rises (costs its movement).</div>
+      <div class="creature-ability"><strong>Undead Fortitude:</strong> DC 10 + damage dealt or stays at 1 HP. Doesn't apply to radiant damage or critical hits.</div>
+      <div class="creature-ability"><strong>Waterlogged Grasp:</strong> On hit, target makes DC 13 Strength save or is Restrained until start of their next turn.</div>
+      <div class="creature-ability"><strong>Immunities:</strong> Poison damage, Poisoned condition.</div>
+    </div>
+    <div class="creature">
+      <div class="creature-name">Waterlogged Priest</div>
+      <div class="creature-type">Medium Undead — CR 3 (modified Wight)</div>
+      <div class="creature-stats"><span>HP: <strong>65</strong></span><span>AC: <strong>14</strong></span><span>Speed: <strong>30 ft</strong></span><span>STR <strong>15</strong> / WIS <strong>16</strong></span></div>
+      <div class="creature-ability"><strong>Inverted Prayer (Recharge 5–6):</strong> 30 ft radius. DC 14 Wisdom save or Frightened until end of next turn AND lose one Channel Divinity / ki point / sorcery point use.</div>
+      <div class="creature-ability"><strong>Life Drain:</strong> Melee spell attack +5, 2d6+3 necrotic. Target's HP maximum reduced by amount dealt until long rest.</div>
+      <div class="creature-ability"><strong>Multiattack:</strong> Life Drain + one Slam (1d6+2 bludgeoning).</div>
+    </div>
+    <div class="dm-note">
+      <div class="dm-note-label">Tactics</div>
+      <p>Penitents submerge and use Waterlogged Grasp to restrain casters. The Priest opens with Inverted Prayer on round 1, then closes in with Life Drain. Difficult terrain punishes everyone. Za'ren's Echo Knight features give interesting tactical options here — his echo can appear on the other side of submerged enemies without wading through them. <strong>Resource drain goal:</strong> 2–3 spell slots and meaningful class resources spent before the Sanctum.</p>
+    </div>
+    <div class="loot-block">
+      <div class="loot-header">Encounter 1 Loot</div>
+      <div class="loot-item"><div class="loot-item-name">Corroded Silver Vestment Clasp</div><div class="loot-item-desc">15gp to most buyers. Religious scholars pay more — it bears the symbol of a pre-Godwound deity whose name has been deliberately carved off.</div></div>
+      <div class="loot-item"><div class="loot-item-name">Waterlogged Tome Fragment</div><div class="loot-item-desc">8 readable pages from a priestly ledger. The god being tithed to is referred to only as "the Unseen Patron." DC 16 Religion: this phrasing matches no known divine tradition in Velastra's recorded history.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCENE 6 ══ -->
+<div class="section-break"><div class="section-title">Scene 6 — The Upper Sanctum</div></div>
+<div class="scene">
+  <div class="scene-header">
+    <div class="scene-num">06</div>
+    <div class="scene-name">What Agares Left Behind</div>
+    <div class="scene-tag tag-explore">Exploration / Discovery</div>
+  </div>
+  <div class="music-cue">
+    <div class="music-cue-label">♪ Soundtrack <span>— "Dungeon" · the living, watching Sanctum</span></div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7dZ1hLIMvyW1siyKoapjZE?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <div class="read-aloud">
+    <p>The Sanctum entrance is a broad stone arch, half of it underwater. Inside, the walls are old cut stone, smooth in the way that takes generations of devotion to achieve. Someone cared about this place once. You can see that care in the craftsmanship even as the corruption has consumed it — beautiful stonework covered in a creeping black mold that moves, almost imperceptibly, at the edge of your torchlight.</p>
+    <p>There is something on the ground ahead. Fabric. Red. A litham — a face-covering worn in certain traditions — and it has been torn, not removed. As if pulled away in haste or desperation.</p>
+    <p>It is made of the same material as the one Barnabas carries.</p>
+  </div>
+
+  <div class="callout"><strong>Barnabas — The Litham:</strong> He recognizes it immediately. The material, the cut, the way the ties are knotted — this is Ordo-issue. It belongs to one of his order. He does not know whose. Combined with the ward marker at Maret's door: someone from the Ordo came here, left a warning at the hamlet, entered the Sanctum, and did not come back. The litham was torn. There is no body.</div>
+
+  <div class="party-rp">
+    <div class="rp-label">Table Roleplay — A Brother's Cloth</div>
+    <div class="rp-lead">Two hooks have now landed on Barnabas — the ward marker, and the torn red litham. Let it land in the room before the dice come back out.</div>
+    <div class="rp-prompt">Hand the litham to Barnabas's player and let them describe what their character does with it. Pocket it? Hold it up for the others? Say a word over it?</div>
+    <div class="rp-prompt">Invite one other PC to ask Barnabas, in character, what the Ordo actually is and why one of them would die out here. Let Barnabas decide how much truth to give.</div>
+    <div class="rp-prompt">Keep it short and let the silence sit. From here on in, the party is walking somebody's last footsteps.</div>
+  </div>
+
+  <div class="skill-check">
+    <div class="skill-check-header">INVESTIGATION — Reading Agares' Signs &nbsp;<span>DC 12</span></div>
+    <div class="skill-row"><div class="skill-range">1–5</div><div class="skill-result">The place feels recently disturbed, but you can't identify anything specific.</div></div>
+    <div class="skill-row"><div class="skill-range">6–10</div><div class="skill-result">A ritual glyph on the floor — hastily scratched, then deliberately smudged. Someone was here and didn't want to leave a readable mark. They were in a hurry.</div></div>
+    <div class="skill-row"><div class="skill-range">11–15</div><div class="skill-result">The smudged glyph is partially readable: a convergence symbol — multiple power streams drawn to a single point below. Whatever is happening, it's happening deeper in.</div></div>
+    <div class="skill-row"><div class="skill-range">16–20</div><div class="skill-result">Fresh torch sconces, wax still pooled at their bases — he was here within the last day. He moved quickly and knew where he was going. He'd been here before, or had a map.</div></div>
+    <div class="skill-row"><div class="skill-range">21+</div><div class="skill-result">As above, and you find a second smudged mark near the stairwell — drawn by a different hand. Smaller, more careful. Someone else has been marking this location for a very long time. Not Agares.</div></div>
+  </div>
+
+  <div class="skill-check">
+    <div class="skill-check-header">ARCANA — The Living Mold &nbsp;<span>DC 15</span></div>
+    <div class="skill-row"><div class="skill-range">1–5</div><div class="skill-result">It's mold. Old mold. You'd rather not touch it.</div></div>
+    <div class="skill-row"><div class="skill-range">6–10</div><div class="skill-result">The mold isn't natural — it spreads with a deliberateness that suggests something is directing it.</div></div>
+    <div class="skill-row"><div class="skill-range">11–15</div><div class="skill-result">The mold pulses faintly in a rhythm that approximates a heartbeat. The Sanctum is responding to something after a long dormancy.</div></div>
+    <div class="skill-row"><div class="skill-range">16–20</div><div class="skill-result">The stone itself has been saturated with inverted divine energy so long it has developed ambient awareness. The deeper you go, the more it will be aware of you.</div></div>
+    <div class="skill-row"><div class="skill-range">21+</div><div class="skill-result">The Sanctum knows you are here. It knew the moment you entered. It is not hostile — it is observing. And beneath that awareness, something much older is paying attention.</div></div>
+  </div>
+
+  <div class="skill-check">
+    <div class="skill-check-header">RELIGION — The Architecture &nbsp;<span>DC 14</span></div>
+    <div class="skill-row"><div class="skill-range">1–5</div><div class="skill-result">Old temple. Clearly not in use anymore.</div></div>
+    <div class="skill-row"><div class="skill-range">6–10</div><div class="skill-result">The architecture is syncretized — features of multiple divine traditions layered over each other, each older than the last. Repurposed more than once.</div></div>
+    <div class="skill-row"><div class="skill-range">11–15</div><div class="skill-result">The most recent layer references a god with no symbol, only a recurring motif: an eye behind a veil. This is not a god in any canon you know.</div></div>
+    <div class="skill-row"><div class="skill-range">16–20</div><div class="skill-result">The eye-behind-the-veil motif appears in the oldest layer too — predating the more recent additions by centuries. Whatever this god is, the original builders worshipped it first.</div></div>
+    <div class="skill-row"><div class="skill-range">21+</div><div class="skill-result">The oldest carvings depict the deity as mortal-scaled — a man receiving worship while still alive. This was a cult of personality around a living person, not a posthumous religion.</div></div>
+  </div>
+
+  <div class="skill-check">
+    <div class="skill-check-header">ARCANA — The Sulfur Smell (Fippy, Advantage) &nbsp;<span>DC 18</span></div>
+    <div class="skill-row"><div class="skill-range">1–5</div><div class="skill-result">Sulfur. Old sulfur. Something fiendish was here.</div></div>
+    <div class="skill-row"><div class="skill-range">6–10</div><div class="skill-result">The sulfur is mixed with an infernal ritual accelerant — something used in summoning or binding work.</div></div>
+    <div class="skill-row"><div class="skill-range">11–17</div><div class="skill-result">The accelerant is specific to ascension rites, not summoning. Agares isn't bringing something here. He is trying to become something here.</div></div>
+    <div class="skill-row"><div class="skill-range">18–20</div><div class="skill-result">As above, plus a secondary scent: condensed mortal belief, physically manifested. Someone was worshipping Agares with enough genuine force to crystallize it. He brought his own divinity with him as a component.</div></div>
+    <div class="skill-row"><div class="skill-range">21+</div><div class="skill-result">As above, and this accelerant blend requires a specific foundation — a site where divine power has been inverted and stabilized over a long period. Agares didn't choose this place randomly. It may have been the only place this rite could work.</div></div>
+  </div>
+
+  <div class="dm-secret">
+    <div class="dm-secret-label">⚠ Fippy — Easter Egg (Deliver Privately)</div>
+    <p><strong>Location:</strong> A collapsed side chapel off the main corridor. DC 11 Perception to notice the partially-blocked archway. Inside: stone benches, some toppled. Centuries-old bones.</p>
+    <p>One set of remains sits slumped in the corner — small bones, halfling-sized. On the wrist bone, barely visible beneath centuries of grime, a brand burned so deeply into the bone it survived the decay of everything else.</p>
+    <p><strong>The brand:</strong> Fippy recognizes the geometry immediately. Same runic family as his own mark. Same craft. A different number. This person bore a different brand from the same coven. They died here, alone, centuries ago. No explanation. No ghost. No journal. Just the bone and the brand and the knowledge that the coven's reach goes back further than he thought — into places and purposes he has no context for yet.</p>
+    <p>Pass a note or a quiet word. This is his discovery to keep or share.</p>
+  </div>
+
+  <!-- ENCOUNTER 2 -->
+  <div class="encounter-block">
+    <div class="encounter-header">
+      <div class="encounter-name">⚔ Encounter 2 — The Sanctum's Sentinels</div>
+      <div class="encounter-difficulty diff-deadly">Hard / Potentially Deadly</div>
+    </div>
+    <div class="music-cue">
+      <div class="music-cue-label">♪ Combat <span>— "Medieval Battle with Magic" · the Wardens wake</span></div>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3eQw0rTzo4LKTQvqwEvq10?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <p class="body">The Sanctum's ancient guardians predate Agares entirely. His ritual activity woke them. They don't serve him. They don't distinguish between him and the party. They serve the Sanctum.</p>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-label">Enemies</div><div class="stat-value">2 Sanctum Wardens + 1 Hollow Penitent</div></div>
+      <div class="stat-card"><div class="stat-label">Terrain</div><div class="stat-value red">Narrow corridors, crumbling floor sections, dim light only</div></div>
+      <div class="stat-card"><div class="stat-label">Purpose</div><div class="stat-value red">Maximum resource drain before the climax</div></div>
+    </div>
+    <div class="creature">
+      <div class="creature-name">Sanctum Warden (×2)</div>
+      <div class="creature-type">Large Construct (Corrupted Divine) — CR 4 each</div>
+      <div class="creature-stats"><span>HP: <strong>85</strong></span><span>AC: <strong>16</strong></span><span>Speed: <strong>30 ft</strong></span><span>STR <strong>19</strong> / CON <strong>18</strong></span></div>
+      <div class="creature-ability"><strong>Constructed Nature:</strong> No air, food, or sleep needed. Immune to poison, disease, exhaustion, frightened, charmed.</div>
+      <div class="creature-ability"><strong>Inverted Ward Aura (10 ft):</strong> Creatures starting their turn in the aura make DC 14 Constitution save or have disadvantage on their next attack roll.</div>
+      <div class="creature-ability"><strong>Multiattack:</strong> Two Slam attacks. +7 to hit. 2d8+4 bludgeoning each.</div>
+      <div class="creature-ability"><strong>Sacred Rupture (Recharge 6):</strong> 15 ft cone. DC 15 Dex save. 4d8 necrotic on fail, half on success. Failures also have HP maximum reduced by half the damage dealt until long rest.</div>
+      <div class="creature-ability"><strong>Resistances:</strong> Bludgeoning, piercing, slashing from non-magical weapons.</div>
+    </div>
+    <div class="creature">
+      <div class="creature-name">Hollow Penitent</div>
+      <div class="creature-type">Medium Undead (Corrupted Cleric) — CR 5</div>
+      <div class="creature-stats"><span>HP: <strong>78</strong></span><span>AC: <strong>13</strong></span><span>Speed: <strong>30 ft</strong></span><span>INT <strong>16</strong> / WIS <strong>18</strong> / CHA <strong>14</strong></span></div>
+      <div class="creature-ability"><strong>Spellcasting (DC 14):</strong> Inflict Wounds 3rd level (+6, 5d10 necrotic on touch) | Blindness/Deafness (DC 14) | Spiritual Weapon (weeping eye of black flame, bonus action) | Hold Person (DC 14, 2 targets simultaneously).</div>
+      <div class="creature-ability"><strong>Corrupted Healing:</strong> When it uses a spell slot, it regains 5 HP.</div>
+      <div class="creature-ability"><strong>Veil Whisper (bonus action):</strong> One creature within 30 ft makes DC 13 Wisdom save or is Incapacitated until end of their next turn.</div>
+      <div class="creature-ability"><strong>Immunities:</strong> Exhaustion, poison, frightened, charmed.</div>
+    </div>
+    <div class="dm-note">
+      <div class="dm-note-label">Tactics</div>
+      <p>Wardens advance together, Aura punishing clusters. The Hollow Penitent opens with Hold Person on the two most dangerous martial characters — with Za'ren and Barnabas both present, it has good targets. Then Spiritual Weapon + Inflict Wounds on isolated or downed targets. Sacred Rupture when the party is grouped.</p>
+      <p>Za'ren's Echo Knight creates interesting tactical pressure — the Wardens' Aura affects the Echo too if it begins its turn within range. Worth noting for tactical authenticity.</p>
+      <p><strong>Goal:</strong> Party enters the deep sanctum hurting, resources depleted, decisions feeling desperate.</p>
+    </div>
+    <div class="loot-block">
+      <div class="loot-header">Encounter 2 Loot</div>
+      <div class="loot-item"><div class="loot-item-name">Sanctum Warden Core Fragment</div><div class="loot-item-desc">80gp to an arcane scholar. Fippy can expend it for advantage on one Arcana check related to divine or planar energy.</div></div>
+      <div class="loot-item"><div class="loot-item-name">Hollow Penitent's Vestment Shard</div><div class="loot-item-desc">DC 14 Religion or History: liturgical stitching predating Silverhollow by 300 years. Legible letters form: <em>"...ALTHAR..."</em> — a fragment of a name in dead script. (DM: partial fragment of Maltharis, Yssovare's mortal name. Party has no context yet.)</div></div>
+      <div class="loot-item"><div class="loot-item-name">Potion of Greater Healing (×2)</div><div class="loot-item-desc">Found in a cracked reliquary in the side chapel. Old but preserved. 4d4+4 HP each.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCENE 7 ══ -->
+<div class="section-break"><div class="section-title">Scene 7 — The Deep Sanctum</div></div>
+<div class="scene">
+  <div class="scene-header">
+    <div class="scene-num">07</div>
+    <div class="scene-name">The Inner Chamber</div>
+    <div class="scene-tag tag-climax">Climax</div>
+  </div>
+  <div class="music-cue">
+    <div class="music-cue-label">♪ Boss <span>— "Mage Boss Fight" · the Cambion & the rite (kill it before the seven words)</span></div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/75X33MJ5boTbxIx0uG4fkt?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <div class="read-aloud">
+    <p>The stairs descend below the water table into chambers that should be flooded but are not — the ritual has pushed the water back. The air is warm and wrong. It smells of sulfur and something older — iron and incense and the specific smell of a fire that has been burning for a very long time.</p>
+    <p>The stairs end at an archway. And the archway opens into the heart of it.</p>
+    <p>The inner chamber is circular, perhaps sixty feet across, the ceiling vaulting upward into darkness. The floor is the original temple stone — ancient, worn smooth by centuries of kneeling — and carved into it, covering every inch, a ritual circle of extraordinary complexity. Hundreds of interlocking sigils. The geometry of something that took generations to perfect.</p>
+    <p>In the center of that circle stands a man you recognize.</p>
+    <p>He is not wearing red. He stands barefoot in robes of deep charcoal grey, arms slightly spread, eyes closed. The air around him moves without wind — slow currents of something invisible rotating around his form. At the four cardinal points, iron stands hold bowls of burning black flame. No heat comes from them. The flames exist but do not warm.</p>
+    <p>His companion — a figure in grey, featureless, whose footsteps make no sound — stands at the circle's edge. Facing outward. Facing you.</p>
+  </div>
+
+  <div class="dm-secret">
+    <div class="dm-secret-label">⚠ DM Eyes Only — The Full Picture</div>
+    <p><strong>Agares knows the party is here.</strong> He knew before they entered. He is approximately 15 minutes from completion when they arrive. This is the "too late" default.</p>
+    <p><strong>His companion</strong> is a Cambion — half-fiend servant. Its function: delay. It will fight, negotiate, threaten, and buy time. It is not stupid.</p>
+    <p><strong>Five-Fallow Naldri</strong> has been scrying this location via the coven's established generational watch. She observes. When Agares ascends, the power surge snaps her scry connection. She has what she needs. The coven now knows.</p>
+  </div>
+
+  <p class="body" style="margin-top:20px;"><strong>The Timing Track — Three Outcomes:</strong></p>
+  <div class="timing-track">
+    <div class="timing-card timing-early">
+      <div class="timing-label">Early Arrival</div>
+      <p>The rite is interruptible. Dispatching the Cambion quickly and disrupting the circle (DC 16 Arcana as an action, destroying one iron stand) collapses the rite. Agares is expelled, fights unstably, escapes at 30% HP. A genuine win — at enormous cost.</p>
+    </div>
+    <div class="timing-card timing-ontime">
+      <div class="timing-label">On Time</div>
+      <p>The rite is at critical inflection. Agares fights while maintaining it. He achieves partial ascension — half the power, all the consequences. He leaves changed but not fully elevated.</p>
+    </div>
+    <div class="timing-card timing-late">
+      <div class="timing-label">Default — Too Late</div>
+      <p>The rite completes. Agares ascends. He turns to look at all of them at once. He does not kill them. He says seven words and leaves. This is the intended outcome.</p>
+    </div>
+  </div>
+
+  <!-- ENCOUNTER 3 -->
+  <div class="encounter-block">
+    <div class="encounter-header">
+      <div class="encounter-name">⚔ Encounter 3 — The Cambion at the Threshold</div>
+      <div class="encounter-difficulty diff-deadly">Deadly (Context-Dependent)</div>
+    </div>
+    <p class="body">The Cambion is not the fight. The Cambion is the clock.</p>
+    <div class="creature">
+      <div class="creature-name">The Grey Companion (Cambion)</div>
+      <div class="creature-type">Medium Fiend — CR 5, modified</div>
+      <div class="creature-stats"><span>HP: <strong>82</strong></span><span>AC: <strong>13</strong></span><span>Speed: <strong>30 ft, fly 60 ft</strong></span><span>STR <strong>18</strong> / CHA <strong>18</strong></span></div>
+      <div class="creature-ability"><strong>Fiendish Charm:</strong> One creature within 30 ft makes DC 14 Charisma save or is Charmed for 1 day. Repeats on taking damage.</div>
+      <div class="creature-ability"><strong>Multiattack:</strong> Two attacks — Spear (+7, 2d6+4 piercing + 2d6 fire) or Firebolt (+5, 2d10 fire, 120 ft).</div>
+      <div class="creature-ability"><strong>Plane Shift (1/day):</strong> Self only. Escapes at 25% HP if rite hasn't completed. If rite completes, it simply vanishes.</div>
+      <div class="creature-ability"><strong>Negotiator:</strong> Will offer information about Agares in exchange for letting the rite complete. Uses Charmed party members as leverage. It is buying minutes.</div>
+    </div>
+    <div class="dm-note">
+      <div class="dm-note-label">Running the Cambion</div>
+      <p>Opens with Fiendish Charm on the primary damage dealer. Blocks the path to the circle — 30 ft away. Each round spent with the Cambion is a round the rite progresses. Private countdown: 6 rounds to completion in the "too late" track. If players try to bypass it to disrupt the circle directly, it grapples and delays. With five PCs including Za'ren, this encounter will move faster — adjust the countdown down by 1 round if the party looks likely to overwhelm it quickly.</p>
+    </div>
+  </div>
+
+  <div class="read-aloud">
+    <p>The Cambion steps aside. Or drops. Or bolts. It doesn't matter which.</p>
+    <p>You are too late by the length of a single breath.</p>
+    <p>The circle catches — not with fire, but with meaning. Every sigil flares at once, every carved line of darkness snapping bright, and for one instant the whole pattern reads as a single word your mind refuses to keep hold of. The chamber makes a sound that isn't quite a sound — a pressure behind the teeth, a silence with weight to it, the held pause at the very bottom of a breath.</p>
+    <p>Agares opens his eyes.</p>
+    <p>They are darker than they were, and deeper, and there is something behind them now that wasn't there when you climbed down — something old and unhurried, settling in like a tenant taking a room it has waited centuries to claim.</p>
+    <p>He lowers his arms. He breathes once, slow. Then he turns and looks at you — at every one of you at the same time, his gaze finding all five faces at once though his head never turns that far. What's in his face isn't triumph. It's quieter than that. Recognition. The calm of a man watching a thing he predicted come true, dead on schedule.</p>
+    <p>He says seven words.</p>
+  </div>
+
+  <div class="music-cue" style="border-left-color: var(--blood);">
+    <div class="music-cue-label" style="color: var(--blood-bright);">♪ Cut the music <span>— stop the track here. Deliver the seven words into total silence.</span></div>
+  </div>
+
+  <div class="dm-secret">
+    <div class="dm-secret-label">⚠ The Seven Words — Deliver Quietly</div>
+    <p>Not a threat. Not a boast. A statement of fact from something that has ceased to need either. His voice carries slightly more than it should.</p>
+    <p><strong><em>"You were always meant to witness this."</em></strong></p>
+    <p>Then he is gone. Not teleported — teleporting takes effort, and effort is beneath what he's become. He is simply here, and then he is simply not. The circle's glow fades. The black flames extinguish. The chamber goes cold and quiet.</p>
+    <p>Scratched into the floor at the center of the circle, in still-warm stone: a partial symbol in a dead liturgical script. The party cannot read it. But Clementine, looking at one specific sequence of characters, feels a cold recognition she cannot explain. She has seen three of those letters before. She does not know where. <em>(DM: it is from her blue book's glowing script, Session 5. She has been carrying a fragment of Yssovare's mortal name without knowing it.)</em></p>
+  </div>
+
+  <div class="party-rp">
+    <div class="rp-label">Table Roleplay — After the Words</div>
+    <div class="rp-lead">Hold the silence. Don't narrate the party's reaction for them — make them find it.</div>
+    <div class="rp-prompt">Around the table, one line each, in character, spoken into the cold of the emptied chamber. Some will rage. Some will say nothing at all. Let the nothing land just as hard.</div>
+    <div class="rp-prompt">Whoever fought hardest to stop the rite gets the first word, if they want it.</div>
+    <div class="rp-prompt">This is the beat they carry out of tonight. Resist papering over it with loot and mechanics. Let them sit in being too late before you move on.</div>
+  </div>
+
+  <div class="dm-note">
+    <div class="dm-note-label">Agares — Post-Ascension State</div>
+    <p><strong>Changed:</strong> Immune to banishment and compelled planar return. Can project corrupting influence at range without physical presence. Detectable by divine casters (DC 15 Religion) near sites of his influence — he is becoming perceivable in the way gods are perceivable. He will not disguise himself again. The next time the party sees him, he arrives as himself.</p>
+    <p><strong>Long Game (DM Only):</strong> Agares does not know he is being cultivated by Yssovare. He believes his ascension was his own. He is wrong. The Sanctum's ancient devotion to Yssovare made this location the perfect vessel. Agares built his ascension on another god's altar. In time, that god will collect on what was used.</p>
+  </div>
+</div>
+
+<!-- ══ SCENE 8 ══ -->
+<div class="section-break"><div class="section-title">Scene 8 — What the Sanctum Leaves You With</div></div>
+<div class="scene">
+  <div class="scene-header">
+    <div class="scene-num">08</div>
+    <div class="scene-name">Aftermath in the Deep</div>
+    <div class="scene-tag tag-explore">Denouement / Discovery</div>
+  </div>
+  <div class="music-cue">
+    <div class="music-cue-label">♪ Soundtrack <span>— "Battle Aftermath" · the cold, emptied chamber</span></div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/41MOK1VAkZkfYwNpS98qpP?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <div class="read-aloud">
+    <p>The chamber is cold now. The warmth that the rite generated has gone with the man who generated it. The water that the ritual pushed back has begun, slowly, to seep through the walls again. You have perhaps an hour before the deep sanctum begins to flood.</p>
+    <p>But the chamber offers what it always has — its history. The walls down here are the oldest in the Sanctum. And here, in the oldest layer, the eye behind the veil is not a symbol. It is a record. Story panels, carved in sequence, worn smooth in places but legible if you look carefully, depicting something that happened in this room a very long time ago.</p>
+  </div>
+
+  <div class="skill-check">
+    <div class="skill-check-header">INVESTIGATION / RELIGION — The Story Panels &nbsp;<span>DC 13</span></div>
+    <div class="skill-row"><div class="skill-range">1–5</div><div class="skill-result">Old carvings. Religious in nature. You can't make out enough detail to say more.</div></div>
+    <div class="skill-row"><div class="skill-range">6–10</div><div class="skill-result">Panels 1–3: A man approaches a group of worshippers. He appears mortal — depicted human-scaled. The worshippers give him offerings while he is still alive.</div></div>
+    <div class="skill-row"><div class="skill-range">11–15</div><div class="skill-result">Panels 4–6: The man teaches the priests a ritual — a prototype of what Agares just performed. Panels 7–8: The man leaves. The priests continue. The swamp begins. Panel 8 detail: the departing figure casts no shadow.</div></div>
+    <div class="skill-row"><div class="skill-range">16–20</div><div class="skill-result">Panel 9 (partially submerged — requires wading into rising water): The man, now depicted larger and abstracted, looks back over his shoulder at the temple. The veil motif surrounds him entirely. He is becoming the symbol. He was worshipped here while alive, and whatever he became began in this room.</div></div>
+    <div class="skill-row"><div class="skill-range">21+</div><div class="skill-result">As above, plus fragments of text in the dead liturgical script: "He came before he was what he is. We held the place for his return." These people were not founding a religion. They were maintaining a site for someone who had been here and promised to come back.</div></div>
+  </div>
+
+  <div class="loot-block">
+    <div class="loot-header">Inner Chamber — Discoveries</div>
+    <div class="loot-item"><div class="loot-item-name">Brass Ritual Compass</div><div class="loot-item-desc">Always points toward the nearest active site of divine inversion — where divine power has been turned against its intended purpose. Currently points southwest. No attunement required. Campaign-long utility.</div></div>
+    <div class="loot-item"><div class="loot-item-name">The Sanctum's Record Stone</div><div class="loot-item-desc">Flat palm-sized stone tablet in dead liturgical script. DC 18 History or magical translation: one side lists ritual observances for "the Patron before his Names." The other side repeats one sentence nine times — each variation meaning: "He was here. He will return. We held the place." Worth 200gp to a scholar. Worth considerably more as evidence.</div></div>
+    <div class="loot-item"><div class="loot-item-name">Agares' Discarded Components</div><div class="loot-item-desc">~40gp in infernal accelerants and ritual components. Plus: a small vial of clear liquid, faintly warm. DC 17 Arcana: condensed mortal belief, physically manifested. Someone was worshipping Agares with enough force to crystallize it. He was already accumulating divine potential before the rite.</div></div>
+  </div>
+</div>
+
+<!-- ══ SCENE 9 ══ -->
+<div class="section-break"><div class="section-title">Scene 9 — The Sanctum Releases Them</div></div>
+<div class="scene">
+  <div class="scene-header">
+    <div class="scene-num">09</div>
+    <div class="scene-name">Getting Out</div>
+    <div class="scene-tag tag-travel">Transition</div>
+  </div>
+  <div class="music-cue">
+    <div class="music-cue-label">♪ Soundtrack <span>— "Campfire in Woods" · Thornmere at sunset, the closing fire</span></div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2lK5dIK8NPt20RxWzfjPVU?utm_source=generator" width="100%" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <p class="body">No further combat encounters — the Sanctum's wards are spent. The long climb back through the upper corridors, the wade through the flooded village ruins, the pull through the swamp to the firm path. Thornmere at sunset.</p>
+  <div class="read-aloud">
+    <p>Maret doesn't ask what happened. She looks at you the way people who have watched travellers go into the swamp and come back look at travellers who have gone into the swamp and come back. She steps aside. There is a fire going. There is food. She sets more plates without being asked.</p>
+    <p>It is a long time before anyone says anything. Outside, the swamp makes its sounds. And somewhere in the dark beneath all that rot and water, the story panels on the deep chamber walls go on telling their quiet testimony to no one who will ever come to read it.</p>
+  </div>
+
+  <div class="party-rp">
+    <div class="rp-label">Table Roleplay — Plates at Maret's Fire</div>
+    <div class="rp-lead">End the session at the fire, not in the swamp. This is the wind-down — give every player a turn at it.</div>
+    <div class="rp-prompt">Maret sets the extra plates without a word. Go around the table: what does each character do with the quiet — eat, drink, stare into the flames, finally speak?</div>
+    <div class="rp-prompt">Let the personal threads surface now. Fippy and the branded bone. Barnabas and the lost hunter of his order. Clementine and the three letters she can't place. Whoever's ready to put it on the table, let them; whoever isn't, let the firelight carry it.</div>
+    <div class="rp-prompt">Close on a single question, asked by one character to another. Whatever it is — end the night there.</div>
+  </div>
+</div>
+
+<!-- ══ DM CHEAT SHEET ══ -->
+<div class="section-break"><div class="section-title">DM Cheat Sheet — Session Reminders</div></div>
+<ul class="checklist">
+  <li>Sundered Diamond — three mutually exclusive choices. Don't push them. The tension is the reward.</li>
+  <li>Ember Shard — slow-burn. No new information this session unless players actively pursue it. Yssovare watches it move. The party feels watched and doesn't know why.</li>
+  <li>Za'ren is present for the full session. His psychic vulnerability from the Spire has cleared with the long rest.</li>
+  <li>The red litham — Ordo-issue, same as Barnabas carries. Torn. No body anywhere. Keep in party inventory notes.</li>
+  <li>Barnabas — two hooks (ward marker at Maret's door + litham in the Sanctum). Both point to the same dead Ordo member. Do not resolve. Thread for later.</li>
+  <li>Fippy — unease builds on the road, intensifies near the swamp. Delivers privately in the side chapel — branded bone. His discovery. His choice to share or keep.</li>
+  <li>Corwen — low-stakes Wild Magic moment on Day Two of the road. Keep it ambient and slightly watched in quality.</li>
+  <li>Clementine — flash of recognition at the floor script. Three letters. That's all. Do not explain.</li>
+  <li>Oswin Tetch (merchant) — met on Day Two evening. Confirms wrong-colored smoke from the Sanctum direction. Confirms the swamp's reputation. Clock reminder.</li>
+  <li>Brass Compass — points southwest toward Silverhollow. Confirm whether the Radiant Sanctuary is still corrupted enough to qualify, or if it points to the next nearest inversion site.</li>
+  <li>Rot Sickness — DC 13 Con save twice: entering village ruins AND entering the Sanctum. Stacks.</li>
+  <li>Naldri scry — happens offscreen at the climax. No in-session acknowledgment. The coven now knows about the ascension. Future thread.</li>
+  <li>Agares is gone. He is not lurking. The party is behind. They know it.</li>
+</ul>
+
+<!-- ══ QUESTIONS ══ -->
+<div class="questions-block">
+  <div class="questions-title">Questions for Josh — Revise Before Session</div>
+  <div class="question-item"><div class="q-num">Q1</div><div class="q-text"><strong>The Cambion's identity:</strong> Left unnamed and featureless. Do you want this to be a recurring named lieutenant, or a disposable servant whose purpose ends here?</div></div>
+  <div class="question-item"><div class="q-num">Q2</div><div class="q-text"><strong>Barnabas' Ordo history:</strong> The dead Ordo member is now two hooks deep. Does this hunter have a name and plot relevance, or is it ambient world texture? What does Barnabas know about his order's reach in Velastra?</div></div>
+  <div class="question-item"><div class="q-num">Q3</div><div class="q-text"><strong>The dead liturgical language:</strong> Does it have a name? Is there a path for the party to eventually translate it — a scholar, a magical effect, something in Clementine's blue book?</div></div>
+  <div class="question-item"><div class="q-num">Q4</div><div class="q-text"><strong>Agares' seven words:</strong> I've written "You were always meant to witness this." Do you want to change them? These will be remembered — they should feel like yours.</div></div>
+  <div class="question-item"><div class="q-num">Q5</div><div class="q-text"><strong>The Brass Compass:</strong> Currently points toward Silverhollow. Is the Radiant Sanctuary still corrupted enough to qualify, or has it been cleansed? If cleansed, it points to the next nearest inversion site — potentially its own reveal.</div></div>
+  <div class="question-item"><div class="q-num">Q6</div><div class="q-text"><strong>Session pacing:</strong> Scenes 1 and 2 are most cuttable if you want to open directly at the road or at Thornmere. What's your instinct on pacing the session open?</div></div>
+  <div class="question-item"><div class="q-num">Q7</div><div class="q-text"><strong>Fippy's reveal — table logistics:</strong> Note, whispered aside, or full-table moment? What works best for your group dynamics with Joshi as a player?</div></div>
+  <div class="question-item"><div class="q-num">Q8</div><div class="q-text"><strong>Za'ren's sister dream:</strong> His psychic vulnerability from the Spire opened a thread about his youngest sister having an undiscovered magical gift. Has a direction been chosen for that side quest, and does anything from it need to surface during this session's road travel?</div></div>
+</div>
+
+</div>
+</body>
+</html>
